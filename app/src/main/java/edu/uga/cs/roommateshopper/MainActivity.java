@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "SuperApp";
+    public static final String TAG = "RoommateShopper";
     private FirebaseAuth mAuth;
 
     @Override
@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
-            // hi
         });
         TextView textView = findViewById( R.id.textView);
         mAuth = FirebaseAuth.getInstance();
