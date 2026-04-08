@@ -1,10 +1,17 @@
 package edu.uga.cs.roommateshopper.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import edu.uga.cs.roommateshopper.data.LoginRepository;
 import edu.uga.cs.roommateshopper.data.Result;
@@ -30,15 +37,26 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String name = user.getDisplayName() != null
+                                ? user.getDisplayName() : user.getEmail();
+                        loginResult.setValue(
+                                new LoginResult(new LoggedInUserView(name))
+                        );
+                    } else {
+                        loginResult.setValue(new LoginResult(R.string.login_failed));
+                    }
+                });
+    }
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+    // Simple interface for the callback
+    public interface RepositoryCallback {
+        void onSuccess(Result.Success<LoggedInUser> result);
+        void onError(Exception e);
     }
 
     public void loginDataChanged(String username, String password) {

@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import edu.uga.cs.roommateshopper.ui.login.LoginFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "RoommateShopper";
@@ -37,42 +39,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        TextView textView = findViewById( R.id.textView);
-        mAuth = FirebaseAuth.getInstance();
-        String email = "dawg@gmail.com";
-        String password = "password";
 
-        mAuth.signInWithEmailAndPassword( email, password )
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success
-                            Log.d( TAG, "signInWithEmail:success" );
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        }
-                        else {
-                            // If sign in fails
-                            Log.d( TAG, "signInWithEmail:failure", task.getException() );
-                        }
-                    }
-                });
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference( "message" );
-        // Read from the database value for ”message”
-        myRef.addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once, initially, and when data is updated
-                String message = dataSnapshot.getValue(String.class);
-                Log.d( TAG, "Read message: " + message );
-                textView.setText( message );
-            }
-            @Override
-            public void onCancelled( DatabaseError error ) {
-                // Failed to read value
-                Log.d( TAG, "Failed to read value.", error.toException() );
-            }
-        });
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser == null) {
+            // Not logged in — show login screen
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, new LoginFragment())
+                    .commit();
+        } else {
+            // Already logged in — go straight to your main content
+            Log.d(TAG, "Already signed in as: " + currentUser.getEmail());
+            // navigate to your main fragment here when you have one
+        }
     }
 }

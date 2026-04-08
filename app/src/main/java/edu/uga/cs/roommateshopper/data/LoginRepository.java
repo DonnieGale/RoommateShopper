@@ -1,54 +1,75 @@
 package edu.uga.cs.roommateshopper.data;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import edu.uga.cs.roommateshopper.data.Result;
 import edu.uga.cs.roommateshopper.data.model.LoggedInUser;
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
 public class LoginRepository {
 
     private static volatile LoginRepository instance;
-
-    private LoginDataSource dataSource;
-
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
+    private final FirebaseAuth mAuth;
     private LoggedInUser user = null;
 
-    // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
-        this.dataSource = dataSource;
+    private LoginRepository() {
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
+    public static LoginRepository getInstance() {
         if (instance == null) {
-            instance = new LoginRepository(dataSource);
+            synchronized (LoginRepository.class) {
+                if (instance == null) {
+                    instance = new LoginRepository();
+                }
+            }
         }
         return instance;
     }
 
     public boolean isLoggedIn() {
-        return user != null;
+        return mAuth.getCurrentUser() != null;
     }
 
     public void logout() {
         user = null;
-        dataSource.logout();
+        mAuth.signOut();
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
-        this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
+    public void login(String email, String password, final LoginCallback callback) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            String name = firebaseUser.getDisplayName() != null
+                                    ? firebaseUser.getDisplayName()
+                                    : firebaseUser.getEmail();
+                            user = new LoggedInUser(firebaseUser.getUid(), name);
+                            callback.onSuccess(new Result.Success<>(user));
+                        } else {
+                            callback.onError(new Exception(
+                                    task.getException() != null
+                                            ? task.getException().getMessage()
+                                            : "Authentication failed."
+                            ));
+                        }
+                    }
+                });
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
-        // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+    public LoggedInUser getLoggedInUser() {
+        return user;
+    }
+
+    public interface LoginCallback {
+        void onSuccess(Result.Success<LoggedInUser> result);
+        void onError(Exception e);
     }
 }
