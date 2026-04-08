@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView textView = findViewById( R.id.textView);
         mAuth = FirebaseAuth.getInstance();
-        String email = "dawg@mail.com";
+        String email = "dawg@gmail.com";
         String password = "password";
 
         mAuth.signInWithEmailAndPassword( email, password )
