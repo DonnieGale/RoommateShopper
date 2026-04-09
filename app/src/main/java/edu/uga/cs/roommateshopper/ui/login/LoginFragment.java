@@ -1,5 +1,6 @@
 package edu.uga.cs.roommateshopper.ui.login;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.uga.cs.roommateshopper.Splash;
 import edu.uga.cs.roommateshopper.databinding.FragmentLoginBinding;
 import edu.uga.cs.roommateshopper.R;
 
@@ -119,6 +121,9 @@ public class LoginFragment extends Fragment {
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
+        Fragment splash = new Splash();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.fragmentContainerView, splash).commit();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
