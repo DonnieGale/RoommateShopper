@@ -12,7 +12,8 @@
         android:id="@+id/fragmentContainerView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:name="edu.uga.cs.roommateshopper.ShoppingList" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
