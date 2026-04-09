@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_shoppingList"
+        android:title="Shopping List"
+        android:icon="@drawable/clipboard" />
+    <item android:id="@+id/action_recentlyPurchased"
+        android:title="Purchased"
+        android:icon="@drawable/dollar" />
+    <item android:id="@+id/action_prevPurchases"
+        android:title="Settlements"
+        android:icon="@drawable/back" />
+    <item android:id="@+id/action_roommates"
+        android:title="Roommates"
+        android:icon="@drawable/group" />
+    <item android:id="@+id/action_profile"
+        android:title="Profile"
+        android:icon="@drawable/user" />
+</menu>
