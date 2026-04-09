@@ -47,18 +47,12 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser == null) {
-            // Not logged in — show login screen
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainerView, new LoginFragment())
-                    .commit();
-        } else {
-            Fragment splash = new Splash();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragmentContainerView, splash).commit();
-            Log.d(TAG, "Already signed in as: " + currentUser.getEmail());
-            // navigate to your main fragment here when you have one
-        }
+
+        // Not logged in — show login screen
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainerView, new LoginFragment())
+                .commit();
+
     }
 }
