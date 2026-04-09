@@ -37,27 +37,29 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
-        FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(username, password)
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        String name = user.getDisplayName() != null
-                                ? user.getDisplayName() : user.getEmail();
-                        loginResult.setValue(
-                                new LoginResult(new LoggedInUserView(name))
-                        );
+                        FirebaseUser user = fAuth.getCurrentUser();
+                        String name = user.getEmail();
+                        loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
                     } else {
-                        loginResult.setValue(new LoginResult(R.string.login_failed));
+                        fAuth.createUserWithEmailAndPassword(username, password)
+                                .addOnCompleteListener(createTask -> {
+                                    if (createTask.isSuccessful()) {
+                                        FirebaseUser user = fAuth.getCurrentUser();
+                                        String name = user.getEmail();
+                                        loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
+                                    } else {
+                                        loginResult.setValue(new LoginResult(R.string.login_failed));
+                                    }
+                                });
                     }
                 });
     }
 
-    // Simple interface for the callback
-    public interface RepositoryCallback {
-        void onSuccess(Result.Success<LoggedInUser> result);
-        void onError(Exception e);
-    }
+
 
     public void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
