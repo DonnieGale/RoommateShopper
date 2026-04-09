@@ -1,5 +1,7 @@
 package edu.uga.cs.roommateshopper;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -10,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragmentContainerView, new LoginFragment())
                     .commit();
         } else {
+            Fragment splash = new Splash();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragmentContainerView, splash).commit();
             Log.d(TAG, "Already signed in as: " + currentUser.getEmail());
             // navigate to your main fragment here when you have one
         }
