@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragmentContainerView, new LoginFragment())
                     .commit();
         } else {
-            // Already logged in — go straight to your main content
             Log.d(TAG, "Already signed in as: " + currentUser.getEmail());
             // navigate to your main fragment here when you have one
         }

@@ -1,32 +1,22 @@
 package edu.uga.cs.roommateshopper.ui.login;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import edu.uga.cs.roommateshopper.data.LoginRepository;
-import edu.uga.cs.roommateshopper.data.Result;
-import edu.uga.cs.roommateshopper.data.model.LoggedInUser;
 import edu.uga.cs.roommateshopper.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
-    }
+    LoginViewModel() {}
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
