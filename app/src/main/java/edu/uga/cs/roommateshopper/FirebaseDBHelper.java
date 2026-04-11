@@ -6,6 +6,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import edu.uga.cs.roommateshopper.models.Purchase;
 import edu.uga.cs.roommateshopper.models.Settlement;
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
+import edu.uga.cs.roommateshopper.models.User;
 
 public class FirebaseDBHelper {
 
@@ -23,6 +24,12 @@ public class FirebaseDBHelper {
         return instance;
     }
 
+
+    public void addUser(User user) {
+        db.child("users")
+                .child(user.id)
+                .setValue(user);
+    }
 
 
     public void addShoppingItem(ShoppingItem item) {

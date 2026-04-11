@@ -6,11 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +24,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * create an instance of this fragment.
  */
 public class Splash extends Fragment {
+
+    private static final String TAG = "FIREBASE_TEST";
+
 
     BottomNavigationView bottomNavigationView;
 
@@ -53,6 +62,11 @@ public class Splash extends Fragment {
 
         FragmentManager manager = getActivity().getSupportFragmentManager();
 
+        // ADD / READ / DELETE shopping item test
+        addTestItem(); // adds a test item
+        listenForShoppingItems(); // retrieves items and deletes a test item
+
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.action_shoppingList) {
@@ -70,4 +84,70 @@ public class Splash extends Fragment {
         });
 
     }
+
+
+
+
+
+    // FOR TESTING DATABASE OPERATIONS:
+
+    private void addTestItem() {
+        ShoppingItem item = new ShoppingItem();
+        item.name = "DeleteMe";
+        item.addedBy = "testUser123";
+        item.timestamp = System.currentTimeMillis();
+
+        FirebaseDBHelper.getInstance().addShoppingItem(item);
+
+        Log.d(TAG, "Item added to Firebase");
+    }
+
+
+
+    private void listenForShoppingItems() {
+        FirebaseDBHelper.getInstance()
+                .getShoppingListRef()
+                .addValueEventListener(new ValueEventListener() {
+
+                    boolean hasDeleted = false; // prevent multiple deletes
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        Log.d(TAG, "----- CURRENT SHOPPING LIST -----");
+
+                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+
+                            ShoppingItem item = itemSnapshot.getValue(ShoppingItem.class);
+
+                            if (item != null) {
+                                item.id = itemSnapshot.getKey();
+
+                                Log.d(TAG,
+                                        "ID: " + item.id +
+                                                ", Name: " + item.name +
+                                                ", AddedBy: " + item.addedBy +
+                                                ", Time: " + item.timestamp);
+
+                                // 🔴 DELETE TEST: delete item named "DeleteMe"
+                                if (!hasDeleted && "DeleteMe".equals(item.name)) {
+                                    hasDeleted = true;
+
+                                    FirebaseDBHelper.getInstance()
+                                            .deleteShoppingItem(item.id);
+
+                                    Log.d(TAG, "Deleted item with ID: " + item.id);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Database error: " + error.getMessage());
+                    }
+                });
+    }
+
+
 }

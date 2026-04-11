@@ -8,13 +8,21 @@ import android.util.Patterns;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import edu.uga.cs.roommateshopper.FirebaseDBHelper;
 import edu.uga.cs.roommateshopper.R;
+import edu.uga.cs.roommateshopper.models.User;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+
+    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private FirebaseDBHelper db = FirebaseDBHelper.getInstance();
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
     LoginViewModel() {}
 
@@ -27,20 +35,39 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                fAuth.signInWithEmailAndPassword(username, password)
+
+        fAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = fAuth.getCurrentUser();
-                        String name = user.getEmail();
-                        loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
+
+                        if (user != null) {
+                            String name = user.getEmail();
+                            loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
+                        }
+
                     } else {
+                        // Create new user if login fails
                         fAuth.createUserWithEmailAndPassword(username, password)
                                 .addOnCompleteListener(createTask -> {
                                     if (createTask.isSuccessful()) {
+
                                         FirebaseUser user = fAuth.getCurrentUser();
-                                        String name = user.getEmail();
-                                        loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
+
+                                        if (user != null) {
+                                            String uid = user.getUid();
+                                            String email = user.getEmail();
+
+                                            User newUser = new User();
+                                            newUser.id = uid;
+                                            newUser.name = email;
+                                            newUser.email = email;
+
+                                            FirebaseDBHelper.getInstance().addUser(newUser);
+
+                                            loginResult.setValue(new LoginResult(new LoggedInUserView(email)));
+                                        }
+
                                     } else {
                                         loginResult.setValue(new LoginResult(R.string.login_failed));
                                     }
