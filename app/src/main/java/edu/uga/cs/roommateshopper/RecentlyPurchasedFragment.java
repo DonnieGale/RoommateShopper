@@ -3,31 +3,22 @@ package edu.uga.cs.roommateshopper;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import edu.uga.cs.roommateshopper.models.ShoppingItem;
+public class RecentlyPurchasedFragment extends Fragment {
 
-
-public class ShoppingList extends Fragment {
-
-    List<ShoppingItem> items;
-
-    public ShoppingList() {
+    public RecentlyPurchasedFragment() {
         // Required empty public constructor
     }
 
 
-    public static ShoppingList newInstance(String param1, String param2) {
-        ShoppingList fragment = new ShoppingList();
+    public static RecentlyPurchasedFragment newInstance(String param1, String param2) {
+        RecentlyPurchasedFragment fragment = new RecentlyPurchasedFragment();
         return fragment;
     }
 
@@ -40,17 +31,10 @@ public class ShoppingList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        return inflater.inflate(R.layout.fragment_recently_purchased, container, false);
     }
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
-
-        items = new ArrayList<>();
-
-
-
-
     }
 }

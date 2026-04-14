@@ -72,13 +72,13 @@ public class Splash extends Fragment {
             if (itemId == R.id.action_shoppingList) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
             } else if (itemId == R.id.action_recentlyPurchased) {
-                //manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchased()).commit();
+                manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
             } else if (itemId == R.id.action_prevPurchases) {
-                //manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchases()).commit();
+                manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchasesFragment()).commit();
             } else if (itemId == R.id.action_roommates) {
-                //manager.beginTransaction().replace(R.id.fragmentContainerView2, new Roommates()).commit();
+                manager.beginTransaction().replace(R.id.fragmentContainerView2, new RoommateFragment()).commit();
             } else if (itemId == R.id.action_profile) {
-                //manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
+                manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
             }
             return true;
         });

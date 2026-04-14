@@ -44,6 +44,7 @@ public class LoginViewModel extends ViewModel {
                         if (user != null) {
                             String name = user.getEmail();
                             loginResult.setValue(new LoginResult(new LoggedInUserView(name)));
+                            FirebaseDBHelper.getInstance().addUser(new User(user.getUid(), name, name));
                         }
 
                     } else {
