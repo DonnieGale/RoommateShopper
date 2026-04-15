@@ -25,7 +25,7 @@ import edu.uga.cs.roommateshopper.models.ShoppingItem;
  */
 public class Splash extends Fragment {
 
-    private static final String TAG = "FIREBASE_TEST";
+
 
 
     BottomNavigationView bottomNavigationView;
@@ -62,9 +62,7 @@ public class Splash extends Fragment {
 
         FragmentManager manager = getActivity().getSupportFragmentManager();
 
-        // ADD / READ / DELETE shopping item test
-        addTestItem(); // adds a test item
-        listenForShoppingItems(); // retrieves items and deletes a test item
+
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -89,65 +87,7 @@ public class Splash extends Fragment {
 
 
 
-    // FOR TESTING DATABASE OPERATIONS:
 
-    private void addTestItem() {
-        ShoppingItem item = new ShoppingItem();
-        item.name = "DeleteMe";
-        item.addedBy = "testUser123";
-        item.timestamp = System.currentTimeMillis();
-
-        FirebaseDBHelper.getInstance().addShoppingItem(item);
-
-        Log.d(TAG, "Item added to Firebase");
-    }
-
-
-
-    private void listenForShoppingItems() {
-        FirebaseDBHelper.getInstance()
-                .getShoppingListRef()
-                .addValueEventListener(new ValueEventListener() {
-
-                    boolean hasDeleted = false; // prevent multiple deletes
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        Log.d(TAG, "----- CURRENT SHOPPING LIST -----");
-
-                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-
-                            ShoppingItem item = itemSnapshot.getValue(ShoppingItem.class);
-
-                            if (item != null) {
-                                item.id = itemSnapshot.getKey();
-
-                                Log.d(TAG,
-                                        "ID: " + item.id +
-                                                ", Name: " + item.name +
-                                                ", AddedBy: " + item.addedBy +
-                                                ", Time: " + item.timestamp);
-
-                                // 🔴 DELETE TEST: delete item named "DeleteMe"
-                                if (!hasDeleted && "DeleteMe".equals(item.name)) {
-                                    hasDeleted = true;
-
-                                    FirebaseDBHelper.getInstance()
-                                            .deleteShoppingItem(item.id);
-
-                                    Log.d(TAG, "Deleted item with ID: " + item.id);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e(TAG, "Database error: " + error.getMessage());
-                    }
-                });
-    }
 
 
 }
