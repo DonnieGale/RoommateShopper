@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoommateShopper">
         <activity
+            android:name=".ShoppingListAdapter"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
