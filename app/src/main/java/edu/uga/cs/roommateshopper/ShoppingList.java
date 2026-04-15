@@ -28,6 +28,8 @@ import edu.uga.cs.roommateshopper.models.ShoppingItem;
 public class ShoppingList extends Fragment {
 
     List<ShoppingItem> items;
+
+    RecyclerView recycler;
     private static final String TAG = "FIREBASE_TEST";
 
     public ShoppingList() {
@@ -61,7 +63,7 @@ public class ShoppingList extends Fragment {
         // ADD / READ / DELETE shopping item test
         addTestItem(); // adds a test item
         listenForShoppingItems(); // retrieves items and deletes a test item
-        RecyclerView recycler = view.findViewById(R.id.recycler);
+        recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         ShoppingListAdapter adapter = new ShoppingListAdapter(items);
         recycler.setAdapter(adapter);
@@ -72,7 +74,7 @@ public class ShoppingList extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new AddShoppingItemFragment();
-                newFragment.show( getSupportFragmentManager(), null);
+                newFragment.show( getParentFragmentManager(), null);
             }
         });
 
@@ -110,6 +112,7 @@ public class ShoppingList extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                         Log.d(TAG, "----- CURRENT SHOPPING LIST -----");
+                        items.clear();
 
                         for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
 
@@ -117,7 +120,10 @@ public class ShoppingList extends Fragment {
 
                             if (item != null) {
                                 item.id = itemSnapshot.getKey();
-
+                                items.add(item);
+                                if (recycler.getAdapter() != null) {
+                                    recycler.getAdapter().notifyDataSetChanged();
+                                }
                                 Log.d(TAG,
                                         "ID: " + item.id +
                                                 ", Name: " + item.name +

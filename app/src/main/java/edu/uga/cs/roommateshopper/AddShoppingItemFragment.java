@@ -1,18 +1,27 @@
 package edu.uga.cs.roommateshopper;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
-public class AddShoppingItemFragment extends Fragment {
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import edu.uga.cs.roommateshopper.models.ShoppingItem;
+
+public class AddShoppingItemFragment extends DialogFragment {
 
     private EditText itemName;
     private EditText price;
@@ -21,16 +30,16 @@ public class AddShoppingItemFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    public static AddShoppingItemFragment newInstance(String param1, String param2) {
-        AddShoppingItemFragment fragment = new AddShoppingItemFragment();
-        Bundle args = new Bundle();
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            // Set the width to Match Parent and height to Wrap Content
+            getDialog().getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
     }
 
     @Override
@@ -43,5 +52,71 @@ public class AddShoppingItemFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        itemName = view.findViewById(R.id.editText1);
+        price = view.findViewById(R.id.editText2);
+        Button saveButton = view.findViewById(R.id.button);
+
+        saveButton.setOnClickListener(new ButtonClickListener());
+    }
+
+    private class ButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String nameString = itemName.getText().toString();
+            String priceString = price.getText().toString();
+
+            if (nameString.isEmpty()) {
+                itemName.setError("Name required");
+                return;
+            }
+
+            double priceValue = 0;
+            try {
+                if (!priceString.isEmpty()) {
+                    priceValue = Double.parseDouble(priceString);
+                }
+            } catch (NumberFormatException e) {
+                price.setError("Invalid price");
+                return;
+            }
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            String addedBy = currentUser.getEmail();
+
+            final ShoppingItem item = new ShoppingItem(null, nameString, addedBy, System.currentTimeMillis(), priceValue);
+
+            // Add a new element to the list in Firebase.
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("shopping_list");
+
+            myRef.push().setValue(item)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Show a quick confirmation
+                            if (getActivity() != null) {
+                                Toast.makeText(getActivity(), "Item added: " + item.name,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Clear the EditTexts for next use.
+                            itemName.setText("");
+                            price.setText("");
+
+                            // Close the dialog
+                            dismiss();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            if (getActivity() != null) {
+                                Toast.makeText(getActivity(), "Failed to add item: " + item.name,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
     }
 }
