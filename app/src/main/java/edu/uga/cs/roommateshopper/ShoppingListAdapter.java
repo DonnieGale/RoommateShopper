@@ -51,16 +51,20 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         TextView itemName = holder.itemView.findViewById( R.id.ItemName );
         TextView itemAddedBy = holder.itemView.findViewById( R.id.ItemAdedBy );
         TextView itemTime = holder.itemView.findViewById( R.id.ItemTime );
+        TextView itemPrice = holder.itemView.findViewById( R.id.ItemPrice );
+
 
         String id = item.id;
         String name = item.name;
         String addedBy = item.addedBy;
         long timestamp = item.timestamp;
+        Double price = item.price;
 
         itemID.setText( id );
         itemName.setText( name );
         itemAddedBy.setText( addedBy );
         itemTime.setText(String.valueOf( timestamp));
+        itemPrice.setText(String.valueOf( price));
 
 
     }

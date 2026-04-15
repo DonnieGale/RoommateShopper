@@ -60,13 +60,14 @@ public class ShoppingList extends Fragment {
 
         items = new ArrayList<ShoppingItem>();
 
-        // ADD / READ / DELETE shopping item test
-        addTestItem(); // adds a test item
-        listenForShoppingItems(); // retrieves items and deletes a test item
         recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         ShoppingListAdapter adapter = new ShoppingListAdapter(items);
         recycler.setAdapter(adapter);
+
+        // ADD / READ / DELETE shopping item test
+        addTestItem(); // adds a test item
+        listenForShoppingItems(); // retrieves items and deletes a test item
 
         FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
 
@@ -121,9 +122,7 @@ public class ShoppingList extends Fragment {
                             if (item != null) {
                                 item.id = itemSnapshot.getKey();
                                 items.add(item);
-                                if (recycler.getAdapter() != null) {
-                                    recycler.getAdapter().notifyDataSetChanged();
-                                }
+
                                 Log.d(TAG,
                                         "ID: " + item.id +
                                                 ", Name: " + item.name +
@@ -140,6 +139,9 @@ public class ShoppingList extends Fragment {
                                     Log.d(TAG, "Deleted item with ID: " + item.id);
                                 }*/
                             }
+                        }
+                        if (recycler.getAdapter() != null) {
+                            recycler.getAdapter().notifyDataSetChanged();
                         }
                     }
 
