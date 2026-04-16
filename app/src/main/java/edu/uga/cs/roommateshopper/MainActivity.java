@@ -49,10 +49,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Not logged in — show login screen
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainerView, new LoginFragment())
-                .commit();
+            if (currentUser == null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainerView, new LoginFragment())
+                        .commit();
+            } else {
+
+                // Logged in — show splash
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainerView, new Splash())
+                        .commit();
+            }
+
+
 
     }
 }

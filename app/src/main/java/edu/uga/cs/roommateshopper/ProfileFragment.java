@@ -89,11 +89,11 @@ public class ProfileFragment extends Fragment {
             button.setOnClickListener(v -> {
                 FirebaseAuth.getInstance().signOut();
 
-                getParentFragmentManager().popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                //getParentFragmentManager().popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainerView, new LoginFragment())
-                        .commit();
+                getParentFragmentManager().beginTransaction();
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragmentContainerView, new LoginFragment()).commit();
 
             });
 
