@@ -60,7 +60,7 @@ public class Splash extends Fragment {
 
         bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
 
-        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentManager manager = getChildFragmentManager();
 
 
 

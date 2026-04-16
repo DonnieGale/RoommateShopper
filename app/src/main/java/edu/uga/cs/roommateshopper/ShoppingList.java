@@ -66,7 +66,7 @@ public class ShoppingList extends Fragment {
         recycler.setAdapter(adapter);
 
         // ADD / READ / DELETE shopping item test
-        addTestItem(); // adds a test item
+        //addTestItem(); // adds a test item
         listenForShoppingItems(); // retrieves items and deletes a test item
 
         FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
