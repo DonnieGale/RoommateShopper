@@ -3,6 +3,10 @@
     <item android:id="@+id/action_shoppingList"
         android:title="Shopping List"
         android:icon="@drawable/clipboard" />
+    <item
+        android:id="@+id/action_shoppingBasket"
+        android:icon="@drawable/basket"
+        android:title="Shopping Basket" />
     <item android:id="@+id/action_recentlyPurchased"
         android:title="Purchased"
         android:icon="@drawable/dollar" />

@@ -69,6 +69,8 @@ public class Splash extends Fragment {
             int itemId = item.getItemId();
             if (itemId == R.id.action_shoppingList) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
+            } else if (itemId == R.id.action_shoppingBasket) {
+                manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingBasketFragment()).commit();
             } else if (itemId == R.id.action_recentlyPurchased) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
             } else if (itemId == R.id.action_prevPurchases) {
