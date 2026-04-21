@@ -107,8 +107,6 @@ public class ShoppingList extends Fragment {
                 .getShoppingListRef()
                 .addValueEventListener(new ValueEventListener() {
 
-                    boolean hasDeleted = false; // prevent multiple deletes
-
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -129,15 +127,7 @@ public class ShoppingList extends Fragment {
                                                 ", AddedBy: " + item.addedBy +
                                                 ", Time: " + item.timestamp);
 
-                                // 🔴 DELETE TEST: delete item named "DeleteMe"
-                                /*if (!hasDeleted && "DeleteMe".equals(item.name)) {
-                                    hasDeleted = true;
 
-                                    FirebaseDBHelper.getInstance()
-                                            .deleteShoppingItem(item.id);
-
-                                    Log.d(TAG, "Deleted item with ID: " + item.id);
-                                }*/
                             }
                         }
                         if (recycler.getAdapter() != null) {
