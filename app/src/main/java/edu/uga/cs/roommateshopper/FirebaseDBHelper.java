@@ -54,6 +54,20 @@ public class FirebaseDBHelper {
                 .removeValue();
     }
 
+    public void editPrice(ShoppingItem item, int newPrice){
+        db.child("shopping_list")
+                .child(item.id)
+                .child("price")
+                .setValue(newPrice);
+    }
+
+    public void editName(ShoppingItem item, String newName){
+        db.child("shopping_list")
+                .child(item.id)
+                .child("name")
+                .setValue(newName);
+    }
+
     public DatabaseReference getShoppingListRef() {
         return db.child("shopping_list");
     }
