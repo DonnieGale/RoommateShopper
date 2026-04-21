@@ -87,7 +87,6 @@ public class ShoppingList extends Fragment {
     }
 
     // FOR TESTING DATABASE OPERATIONS:
-
     private void addTestItem() {
         ShoppingItem item = new ShoppingItem();
         item.name = "DeleteMe";
