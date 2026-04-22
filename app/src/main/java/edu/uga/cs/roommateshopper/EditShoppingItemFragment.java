@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ public class EditShoppingItemFragment extends DialogFragment {
     Button delete;
 
     ShoppingItem item;
+    EditText quantity;
 
 
     public EditShoppingItemFragment(ShoppingItem item) {
@@ -59,7 +59,7 @@ public class EditShoppingItemFragment extends DialogFragment {
 
         name = view.findViewById(R.id.EditName);
         price = view.findViewById(R.id.EditPrice);
-
+        quantity = view.findViewById(R.id.editQuantity);
         save = view.findViewById(R.id.Save);
         delete = view.findViewById(R.id.DeleteButton);
         textView = view.findViewById(R.id.textView2);
@@ -88,6 +88,7 @@ public class EditShoppingItemFragment extends DialogFragment {
             public void onClick(View v) {
                 String nameString = name.getText().toString();
                 String priceString = price.getText().toString();
+                String quantityString = quantity.getText().toString();
 
                 if (nameString.isEmpty()) {
                     name.setError("Name required");
@@ -97,8 +98,14 @@ public class EditShoppingItemFragment extends DialogFragment {
                     price.setError("Price Required");
                     return;
                 }
+                if(quantityString.isEmpty()){
+                    quantity.setError("Quantity Required");
+                    return;
+                }
                 FirebaseDBHelper.getInstance().editName(item, nameString);
                 FirebaseDBHelper.getInstance().editPrice(item, Integer.parseInt(priceString));
+                FirebaseDBHelper.getInstance().editQuantity(item, Integer.parseInt(quantityString));
+
                 dismiss();
 
 

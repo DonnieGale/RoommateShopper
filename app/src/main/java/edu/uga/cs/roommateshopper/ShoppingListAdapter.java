@@ -70,6 +70,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
         TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
         TextView itemPrice = holder.itemView.findViewById(R.id.ItemPrice);
+        TextView itemQuantity = holder.itemView.findViewById(R.id.ItemQuantity);
 
 
         String id = item.id;
@@ -77,12 +78,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         String addedBy = item.addedBy;
         long timestamp = item.timestamp;
         Double price = item.price;
+        int number = item.quantity;
 
         itemID.setText(id);
         itemName.setText(name);
         itemAddedBy.setText(addedBy);
         itemTime.setText(String.valueOf(timestamp));
         itemPrice.setText(String.valueOf(price));
+        itemQuantity.setText(String.valueOf(number));
 
     }
 

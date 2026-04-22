@@ -32,6 +32,15 @@ public class FirebaseDBHelper {
                 .setValue(user);
     }
 
+    // i don't know how we want to implement friending yet
+    public void addFriend(User user, String friendId){
+        db.child("users")
+                .child("friends")
+                .child(user.id)
+                .child(friendId)
+                .setValue(friendId);
+    }
+
     public DatabaseReference getUsersRef() {
         return db.child("users");
     }
@@ -66,6 +75,13 @@ public class FirebaseDBHelper {
                 .child(item.id)
                 .child("name")
                 .setValue(newName);
+    }
+
+    public void editQuantity(ShoppingItem item, int newQuantity){
+        db.child("shopping_list")
+                .child(item.id)
+                .child("quantity")
+                .setValue(newQuantity);
     }
 
     public DatabaseReference getShoppingListRef() {

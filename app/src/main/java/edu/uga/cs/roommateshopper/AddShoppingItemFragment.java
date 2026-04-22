@@ -25,6 +25,7 @@ public class AddShoppingItemFragment extends DialogFragment {
 
     private EditText itemName;
     private EditText price;
+    private EditText quantity;
 
     public AddShoppingItemFragment() {
         // Required empty public constructor
@@ -55,6 +56,7 @@ public class AddShoppingItemFragment extends DialogFragment {
 
         itemName = view.findViewById(R.id.editText1);
         price = view.findViewById(R.id.editText2);
+        quantity = view.findViewById(R.id.editText3);
         Button saveButton = view.findViewById(R.id.button);
 
         saveButton.setOnClickListener(new ButtonClickListener());
@@ -65,6 +67,7 @@ public class AddShoppingItemFragment extends DialogFragment {
         public void onClick(View v) {
             String nameString = itemName.getText().toString();
             String priceString = price.getText().toString();
+            String QuantityVal = quantity.getText().toString();
 
             if (nameString.isEmpty()) {
                 itemName.setError("Name required");
@@ -80,11 +83,20 @@ public class AddShoppingItemFragment extends DialogFragment {
                 price.setError("Invalid price");
                 return;
             }
+            int quantityNum = 0;
+            try {
+                if (!QuantityVal.isEmpty()) {
+                    quantityNum = Integer.parseInt(QuantityVal);
+                }
+            } catch (NumberFormatException e) {
+                price.setError("Invalid Quantity");
+                return;
+            }
 
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             String addedBy = currentUser.getEmail();
 
-            final ShoppingItem item = new ShoppingItem(null, nameString, addedBy, System.currentTimeMillis(), priceValue);
+            final ShoppingItem item = new ShoppingItem(null, nameString, addedBy, System.currentTimeMillis(), priceValue, quantityNum);
 
             // Add a new element to the list in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -103,6 +115,7 @@ public class AddShoppingItemFragment extends DialogFragment {
                             // Clear the EditTexts for next use.
                             itemName.setText("");
                             price.setText("");
+                            quantity.setText("");
 
                             // Close the dialog
                             dismiss();
