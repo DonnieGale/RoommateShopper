@@ -94,42 +94,38 @@ public class AddShoppingItemFragment extends DialogFragment {
             }
 
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser == null) return;
+
             String addedBy = currentUser.getEmail();
+            String uid = currentUser.getUid();
 
             final ShoppingItem item = new ShoppingItem(null, nameString, addedBy, System.currentTimeMillis(), priceValue, quantityNum);
 
-            // Add a new element to the list in Firebase.
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("shopping_list");
+            DatabaseReference rootRef = database.getReference();
 
-            myRef.push().setValue(item)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // Show a quick confirmation
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), "Item added: " + item.name,
-                                        Toast.LENGTH_SHORT).show();
-                            }
+            // First, find the user's group
+            rootRef.child("users").child(uid).child("groupId").get().addOnSuccessListener(snapshot -> {
+                if (snapshot.exists()) {
+                    String groupId = snapshot.getValue(String.class);
 
-                            // Clear the EditTexts for next use.
-                            itemName.setText("");
-                            price.setText("");
-                            quantity.setText("");
-
-                            // Close the dialog
-                            dismiss();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), "Failed to add item: " + item.name,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    // Then, save the item to that group's shopping list
+                    rootRef.child("groups").child(groupId).child("shopping_items").push().setValue(item)
+                            .addOnSuccessListener(aVoid -> {
+                                if (getActivity() != null) {
+                                    Toast.makeText(getActivity(), "Item added to group: " + item.name, Toast.LENGTH_SHORT).show();
+                                }
+                                dismiss();
+                            })
+                            .addOnFailureListener(e -> {
+                                if (getActivity() != null) {
+                                    Toast.makeText(getActivity(), "Failed to add item", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(getActivity(), "Please join a group first!", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }

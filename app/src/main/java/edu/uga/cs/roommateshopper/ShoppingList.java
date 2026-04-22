@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -101,7 +104,7 @@ public class ShoppingList extends Fragment {
 
 
 
-    private void listenForShoppingItems() {
+    /*private void listenForShoppingItems() {
         FirebaseDBHelper.getInstance()
                 .getShoppingListRef()
                 .addValueEventListener(new ValueEventListener() {
@@ -139,5 +142,35 @@ public class ShoppingList extends Fragment {
                         Log.e(TAG, "Database error: " + error.getMessage());
                     }
                 });
+    }*/
+
+    private void listenForShoppingItems() {
+        String uid = FirebaseAuth.getInstance().getUid();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+
+        // find group
+        rootRef.child("users").child(uid).child("groupId").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().getValue() != null) {
+                String groupId = task.getResult().getValue(String.class);
+
+                //Listen for items in group
+                rootRef.child("groups").child(groupId).child("shopping_items")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                items.clear();
+                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    ShoppingItem item = postSnapshot.getValue(ShoppingItem.class);
+                                    items.add(item);
+                                }
+                                if (recycler.getAdapter() != null) {
+                                    recycler.getAdapter().notifyDataSetChanged();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {}
+                        });
+            }
+        });
     }
 }
