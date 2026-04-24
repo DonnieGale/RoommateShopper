@@ -138,7 +138,6 @@ public class ShoppingBasketFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        Log.d(TAG, "----- CURRENT SHOPPING LIST -----");
                         items.clear();
 
                         for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
@@ -148,14 +147,6 @@ public class ShoppingBasketFragment extends Fragment {
                             if (item != null) {
                                 item.id = itemSnapshot.getKey();
                                 items.add(item);
-
-                                Log.d(TAG,
-                                        "ID: " + item.id +
-                                                ", Name: " + item.name +
-                                                ", AddedBy: " + item.addedBy +
-                                                ", Time: " + item.timestamp);
-
-
                             }
                         }
                         if (recycler.getAdapter() != null) {

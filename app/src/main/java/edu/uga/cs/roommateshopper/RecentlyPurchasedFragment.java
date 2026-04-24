@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +19,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.uga.cs.roommateshopper.models.Purchase;
@@ -29,7 +34,10 @@ public class RecentlyPurchasedFragment extends Fragment {
 
 
     public static final String TAG = "RecentlyPurchasedFragment";
-    FloatingActionButton settleButton;
+    private FloatingActionButton settleButton;
+    private RecyclerView recyclerView;
+    private RecentlyPurchasedFragmentAdapter adapter;
+    private List<Purchase> purchases;
 
     public RecentlyPurchasedFragment() {
         // Required empty public constructor
@@ -56,8 +64,13 @@ public class RecentlyPurchasedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
 
+        recyclerView = view.findViewById(R.id.RecyclerView2);
+        purchases = new ArrayList<>();
+        adapter = new RecentlyPurchasedFragmentAdapter(purchases);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
 
-
+        listenForPurchaseItems();
 
         settleButton = view.findViewById(R.id.settleButton);
 
@@ -178,5 +191,29 @@ public class RecentlyPurchasedFragment extends Fragment {
             });
         });
 
+    }
+
+    private void listenForPurchaseItems() {
+        FirebaseDBHelper.getInstance()
+                .getPurchasesRef()
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        purchases.clear();
+                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                            Purchase purchase = itemSnapshot.getValue(Purchase.class);
+                            if (purchase != null) {
+                                purchase.id = itemSnapshot.getKey();
+                                purchases.add(purchase);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Database error: " + error.getMessage());
+                    }
+                });
     }
 }
