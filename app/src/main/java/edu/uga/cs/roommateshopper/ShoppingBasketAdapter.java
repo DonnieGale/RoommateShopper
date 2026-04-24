@@ -66,8 +66,8 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
         TextView itemName = holder.itemView.findViewById(R.id.ItemName);
         TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
         TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
-        TextView itemPrice = holder.itemView.findViewById(R.id.ItemPrice);
-        TextView itemQuantity = holder.itemView.findViewById(R.id.ItemQuantity);
+        TextView itemPrice = holder.itemView.findViewById(R.id.Spent);
+        TextView itemQuantity = holder.itemView.findViewById(R.id.Difference);
 
 
         String id = item.id;

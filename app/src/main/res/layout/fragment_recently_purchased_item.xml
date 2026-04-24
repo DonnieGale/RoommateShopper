@@ -41,13 +41,13 @@
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/ItemPrice"
+                android:id="@+id/Spent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/ItemQuantity"
+                android:id="@+id/Difference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

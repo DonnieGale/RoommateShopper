@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import edu.uga.cs.roommateshopper.models.Purchase;
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapter<RecentlyPurchasedFragmentAdapterAdapter.RecentlyPurchasedHolderHolder> {
@@ -57,8 +56,8 @@ public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapte
         TextView itemName = holder.itemView.findViewById(R.id.ItemName);
         TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
         TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
-        TextView itemPrice = holder.itemView.findViewById(R.id.ItemPrice);
-        TextView itemQuantity = holder.itemView.findViewById(R.id.ItemQuantity);
+        TextView itemPrice = holder.itemView.findViewById(R.id.Spent);
+        TextView itemQuantity = holder.itemView.findViewById(R.id.Difference);
 
 
         String id = item.id;
