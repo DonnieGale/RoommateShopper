@@ -26,7 +26,7 @@ import edu.uga.cs.roommateshopper.models.ShoppingItem;
 public class Splash extends Fragment {
 
 
-
+    //private int selectedNavItem = R.id.home;
 
     BottomNavigationView bottomNavigationView;
 

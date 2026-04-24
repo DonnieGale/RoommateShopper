@@ -22,6 +22,11 @@ public class Remove_Purchase_Item extends DialogFragment {
     Button removeFromPurchaseButton;
     ShoppingItem item;
     String purchaseId;
+
+    public Remove_Purchase_Item() {
+        // Required empty public constructor
+    }
+
     public Remove_Purchase_Item(ShoppingItem item, String purchaseId) {
         this.item = item;
         this.purchaseId = purchaseId;

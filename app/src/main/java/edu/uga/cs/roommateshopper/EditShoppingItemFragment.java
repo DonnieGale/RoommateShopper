@@ -35,6 +35,9 @@ public class EditShoppingItemFragment extends DialogFragment {
 
     Button addToCart;
 
+    public EditShoppingItemFragment() {
+        // Required empty public constructor
+    }
 
     public EditShoppingItemFragment(ShoppingItem item) {
         this.item = item;
