@@ -5,21 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import edu.uga.cs.roommateshopper.models.Purchase;
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 
 public class Remove_Purchase_Item extends DialogFragment {
 
+    public static final String TAG = "Remove_Purchase_Item";
 
-    Button button;
+    Button removeFromPurchaseButton;
     ShoppingItem item;
     String purchaseId;
     public Remove_Purchase_Item(ShoppingItem item, String purchaseId) {
@@ -48,13 +48,13 @@ public class Remove_Purchase_Item extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        button = view.findViewById(R.id.button4);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        removeFromPurchaseButton = view.findViewById(R.id.removeFromPurchaseButton);
+        removeFromPurchaseButton.setOnClickListener(v -> {
                 //FirebaseDBHelper.getInstance().(item);
-                dismiss();
-            }
+            FirebaseDBHelper.getInstance()
+                    .removeItemFromPurchaseAndUpdate(purchaseId, item);
+
+            Log.d(TAG, "Item removed from purchase and added back to list");
         });
     }
 

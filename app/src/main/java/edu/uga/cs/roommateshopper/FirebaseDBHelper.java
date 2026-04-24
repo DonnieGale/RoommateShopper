@@ -1,7 +1,14 @@
 package edu.uga.cs.roommateshopper;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
@@ -199,6 +206,53 @@ public class FirebaseDBHelper {
         db.child("settlements")
                 .child(key)
                 .setValue(settlement);
+    }
+
+
+
+    public void removeItemFromPurchaseAndUpdate(String purchaseId, ShoppingItem item) {
+
+        DatabaseReference purchaseRef = db.child("purchases").child(purchaseId);
+
+        purchaseRef.child("items").child(item.id).removeValue();
+
+        purchaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Purchase purchase = snapshot.getValue(Purchase.class);
+
+                if (purchase == null) return;
+
+                if (purchase.items.isEmpty()) {
+
+                    purchaseRef.removeValue();
+
+                    Log.d("FirebaseDBHelper", "Purchase deleted (empty)");
+
+                } else {
+
+                    // 4. Otherwise recompute total price
+                    double newTotal = 0;
+
+                    for (ShoppingItem i : purchase.items.values()) {
+                        newTotal += i.price;
+                    }
+
+                    purchaseRef.child("totalPrice").setValue(newTotal);
+
+                    Log.d("FirebaseDBHelper", "Purchase updated. New total: " + newTotal);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseDBHelper", error.getMessage());
+            }
+        });
+
+        // Add item back to shopping list
+        db.child("shopping_list").child(item.id).setValue(item);
     }
 
     public DatabaseReference getSettlementsRef() {
