@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 
@@ -29,6 +31,9 @@ public class EditShoppingItemFragment extends DialogFragment {
 
     ShoppingItem item;
     EditText quantity;
+
+
+    Button addToCart;
 
 
     public EditShoppingItemFragment(ShoppingItem item) {
@@ -64,6 +69,9 @@ public class EditShoppingItemFragment extends DialogFragment {
         delete = view.findViewById(R.id.DeleteButton);
         textView = view.findViewById(R.id.textView2);
         textView.setText("Edit: " + item.name);
+
+
+        addToCart = view.findViewById(R.id.AddToCart);
 
 
 
@@ -112,5 +120,25 @@ public class EditShoppingItemFragment extends DialogFragment {
             }
         });
 
+
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (item == null || item.id == null) {
+                    Log.e(TAG, "Item or item ID is null");
+                    return;
+                }
+
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                FirebaseDBHelper.getInstance()
+                        .moveItemToBasket(uid, item);
+
+                Log.d(TAG, "Moved item to basket: " + item.name);
+
+                dismiss();
+            }
+        });
     }
 }

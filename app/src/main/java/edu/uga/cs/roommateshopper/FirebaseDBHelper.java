@@ -140,7 +140,7 @@ public class FirebaseDBHelper {
     // 🔄 Checkout: basket → purchase
     public void checkoutBasket(String uid,
                                String userName,
-                               Map<String, PurchasedItem> items,
+                               Map<String, ShoppingItem> items,
                                double totalPrice,
                                long timestamp) {
 

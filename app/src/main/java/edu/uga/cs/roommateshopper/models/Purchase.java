@@ -9,13 +9,13 @@ public class Purchase {
     public double totalPrice;
     public long timestamp;
 
-    public Map<String, PurchasedItem> items;
+    public Map<String, ShoppingItem> items;
 
     public Purchase() {}
 
     public Purchase(String id, String purchasedBy, String purchasedByName,
                     double totalPrice, long timestamp,
-                    Map<String, PurchasedItem> items) {
+                    Map<String, ShoppingItem> items) {
         this.id = id;
         this.purchasedBy = purchasedBy;
         this.purchasedByName = purchasedByName;
