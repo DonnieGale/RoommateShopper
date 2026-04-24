@@ -40,7 +40,7 @@ public class ShoppingList extends Fragment {
     }
 
 
-    public static ShoppingList newInstance(String param1, String param2) {
+    public static ShoppingList newInstance() {
         ShoppingList fragment = new ShoppingList();
         return fragment;
     }

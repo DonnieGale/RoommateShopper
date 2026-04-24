@@ -3,44 +3,47 @@ package edu.uga.cs.roommateshopper;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 import edu.uga.cs.roommateshopper.placeholder.PlaceholderContent;
 
-/**
- * A fragment representing a list of Items.
- */
+
 public class ShoppingBasketFragment extends Fragment {
 
+    List<ShoppingItem> items;
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    RecyclerView recycler;
+    private static final String TAG = "ShoppingBasketFragment";
 
-    private int mColumnCount = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ShoppingBasketFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ShoppingBasketFragment newInstance(int columnCount) {
+    public static ShoppingBasketFragment newInstance() {
         ShoppingBasketFragment fragment = new ShoppingBasketFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -48,27 +51,76 @@ public class ShoppingBasketFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shopping_basket_list, container, false);
+        return inflater.inflate(R.layout.fragment_shopping_basket, container, false);
+    }
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        items = new ArrayList<ShoppingItem>();
+
+        recycler = view.findViewById(R.id.recycler);
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        ShoppingBasketAdapter adapter = new ShoppingBasketAdapter(items);
+        recycler.setAdapter(adapter);
+
+        //addTestItem(); // adds a test item
+        listenForBasketItems(); // retrieves items and deletes a test item
+
+        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton2);
+
+        fab.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Purchase
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
-        }
-        return view;
+        });
+    }
+
+    private void listenForBasketItems() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDBHelper.getInstance()
+                .getBasketRef(firebaseUser.getUid())
+                .addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        Log.d(TAG, "----- CURRENT SHOPPING LIST -----");
+                        items.clear();
+
+                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+
+                            ShoppingItem item = itemSnapshot.getValue(ShoppingItem.class);
+
+                            if (item != null) {
+                                item.id = itemSnapshot.getKey();
+                                items.add(item);
+
+                                Log.d(TAG,
+                                        "ID: " + item.id +
+                                                ", Name: " + item.name +
+                                                ", AddedBy: " + item.addedBy +
+                                                ", Time: " + item.timestamp);
+
+
+                            }
+                        }
+                        if (recycler.getAdapter() != null) {
+                            recycler.getAdapter().notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Database error: " + error.getMessage());
+                    }
+                });
     }
 }

@@ -32,14 +32,6 @@ public class FirebaseDBHelper {
                 .setValue(user);
     }
 
-    // i don't know how we want to implement friending yet
-    public void addFriend(User user, String friendId){
-        db.child("users")
-                .child("friends")
-                .child(user.id)
-                .child(friendId)
-                .setValue(friendId);
-    }
 
     public DatabaseReference getUsersRef() {
         return db.child("users");
