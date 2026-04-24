@@ -29,14 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RoommateFragment extends Fragment {
 
-    private String currentGroupId;
     private DatabaseReference mDatabase;
     private FirebaseUser mUser;
 
-    Button joinGroup;
-    Button createGroup;
     LinearLayout roommatesList;
-    TextView GroupID;
 
     public RoommateFragment() {
         // Required empty public constructor
@@ -66,38 +62,8 @@ public class RoommateFragment extends Fragment {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        joinGroup = view.findViewById(R.id.Join);
-        createGroup = view.findViewById(R.id.Invite);
         roommatesList = view.findViewById(R.id.roommatesList);
-        GroupID = view.findViewById(R.id.textView3);
 
-        joinGroup.setOnClickListener(v -> {
-            DialogFragment newFragment = new JoinGroupFragment();
-            newFragment.show(getParentFragmentManager(), null);
-        });
-
-        createGroup.setOnClickListener(v -> {
-            DialogFragment newFragment = new CreateGroupFragment();
-            newFragment.show(getParentFragmentManager(), null);
-        });
-
-        // Fetch roommates if user is in a group
-        if (mUser != null) {
-            mDatabase.child("users").child(mUser.getUid()).child("groupId").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        currentGroupId = snapshot.getValue(String.class);
-                        GroupID.setText("Group Id: "+ currentGroupId);
-                        getRoommates(currentGroupId);
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
-            });
-        }
 
     }
 
