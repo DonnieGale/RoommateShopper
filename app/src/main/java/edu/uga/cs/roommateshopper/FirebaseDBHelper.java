@@ -109,8 +109,9 @@ public class FirebaseDBHelper {
 
     // 🔄 Move item: basket → shopping_list
     public void moveItemToShoppingList(String uid, ShoppingItem item) {
-        addShoppingItem(item);
         removeItemFromBasket(uid, item.id);
+        addShoppingItem(item);
+
     }
 
     // =========================

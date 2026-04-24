@@ -40,8 +40,8 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
                     int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         ShoppingItem item = items.get(position);
-                        DialogFragment editShoppingItemFragment = new EditShoppingItemFragment(item);
-                        editShoppingItemFragment.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
+                        DialogFragment MoveBackFragment = new MoveBackFragment(item);
+                        MoveBackFragment.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
                         Log.d("ShoppingListAdapter", "Item clicked: " + item.name);
                     }
                 }
