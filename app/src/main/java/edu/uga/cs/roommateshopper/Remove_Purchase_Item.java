@@ -55,6 +55,7 @@ public class Remove_Purchase_Item extends DialogFragment {
                     .removeItemFromPurchaseAndUpdate(purchaseId, item);
 
             Log.d(TAG, "Item removed from purchase and added back to list");
+            dismiss();
         });
     }
 

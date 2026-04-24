@@ -224,7 +224,7 @@ public class FirebaseDBHelper {
 
                 if (purchase == null) return;
 
-                if (purchase.items.isEmpty()) {
+                if (purchase.items == null || purchase.items.isEmpty()) {
 
                     purchaseRef.removeValue();
 
