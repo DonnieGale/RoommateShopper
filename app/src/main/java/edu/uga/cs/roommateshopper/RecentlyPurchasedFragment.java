@@ -57,6 +57,8 @@ public class RecentlyPurchasedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+
+
         settleButton = view.findViewById(R.id.settleButton);
 
         settleButton.setOnClickListener(v -> {
