@@ -21,13 +21,15 @@ public class Remove_Purchase_Item extends DialogFragment {
 
     Button button;
     ShoppingItem item;
-    public Remove_Purchase_Item(ShoppingItem item) {
+    String purchaseId;
+    public Remove_Purchase_Item(ShoppingItem item, String purchaseId) {
         this.item = item;
+        this.purchaseId = purchaseId;
     }
 
 
-    public static Remove_Purchase_Item newInstance(ShoppingItem item) {
-        Remove_Purchase_Item fragment = new Remove_Purchase_Item(item);
+    public static Remove_Purchase_Item newInstance(ShoppingItem item, String purchaseId) {
+        Remove_Purchase_Item fragment = new Remove_Purchase_Item(item,purchaseId);
         return fragment;
     }
 
@@ -50,7 +52,7 @@ public class Remove_Purchase_Item extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //FirebaseDBHelper.getInstance().(item);
                 dismiss();
             }
         });

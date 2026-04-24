@@ -19,9 +19,11 @@ import edu.uga.cs.roommateshopper.models.ShoppingItem;
 public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapter<RecentlyPurchasedFragmentAdapterAdapter.RecentlyPurchasedHolderHolder> {
 
     List<ShoppingItem> items;
+    private String purchaseId;
 
-    public RecentlyPurchasedFragmentAdapterAdapter(List<ShoppingItem> items) {
+    public RecentlyPurchasedFragmentAdapterAdapter(List<ShoppingItem> items, String purchaseId) {
         this.items = items;
+        this.purchaseId = purchaseId;
     }
 
     class RecentlyPurchasedHolderHolder extends RecyclerView.ViewHolder {
@@ -34,7 +36,7 @@ public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapte
                     int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         ShoppingItem item = items.get(position);
-                        DialogFragment Remove_Purchase_Item = new Remove_Purchase_Item(item);
+                        DialogFragment Remove_Purchase_Item = new Remove_Purchase_Item(item,purchaseId);
                         Remove_Purchase_Item.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
                     }
                 }

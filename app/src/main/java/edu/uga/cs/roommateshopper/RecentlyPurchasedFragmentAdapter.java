@@ -75,7 +75,7 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
             items.addAll(purchase.items.values());
         }
         
-        RecentlyPurchasedFragmentAdapterAdapter adapter = new RecentlyPurchasedFragmentAdapterAdapter(items);
+        RecentlyPurchasedFragmentAdapterAdapter adapter = new RecentlyPurchasedFragmentAdapterAdapter(items,purchase.id);
         holder.recycler.setAdapter(adapter);
     }
 
