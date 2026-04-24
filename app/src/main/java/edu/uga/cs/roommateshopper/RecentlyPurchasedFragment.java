@@ -9,15 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class RecentlyPurchasedFragment extends Fragment {
+
+    FloatingActionButton fab;
 
     public RecentlyPurchasedFragment() {
         // Required empty public constructor
     }
 
 
-    public static RecentlyPurchasedFragment newInstance(String param1, String param2) {
+    public static RecentlyPurchasedFragment newInstance() {
         RecentlyPurchasedFragment fragment = new RecentlyPurchasedFragment();
         return fragment;
     }
@@ -36,5 +40,15 @@ public class RecentlyPurchasedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
+
+        fab = view.findViewById(R.id.floatingActionButton3);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event here
+            }
+        });
+
     }
 }
