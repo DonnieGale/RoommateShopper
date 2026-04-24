@@ -5,16 +5,31 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.uga.cs.roommateshopper.models.Purchase;
+import edu.uga.cs.roommateshopper.models.Settlement;
+import edu.uga.cs.roommateshopper.models.User;
+import edu.uga.cs.roommateshopper.models.UserTotal;
 
 
 public class RecentlyPurchasedFragment extends Fragment {
 
-    FloatingActionButton fab;
+
+    public static final String TAG = "RecentlyPurchasedFragment";
+    FloatingActionButton settleButton;
 
     public RecentlyPurchasedFragment() {
         // Required empty public constructor
@@ -41,13 +56,124 @@ public class RecentlyPurchasedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
 
-        fab = view.findViewById(R.id.floatingActionButton3);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the click event here
-            }
+        settleButton = view.findViewById(R.id.settleButton);
+
+        settleButton.setOnClickListener(v -> {
+
+            DatabaseReference purchasesRef =
+                    FirebaseDBHelper.getInstance().getPurchasesRef();
+
+            DatabaseReference usersRef =
+                    FirebaseDBHelper.getInstance().getUsersRef();
+
+
+
+            /*Settlement test = new Settlement();
+            test.totalCost = 100;
+            test.timestamp = System.currentTimeMillis();
+
+            FirebaseDBHelper.getInstance().addSettlement(test);
+*/
+
+
+
+            purchasesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot purchaseSnapshot) {
+
+                    double totalCost = 0;
+
+                    // uid -> total spent
+                    Map<String, Double> userSpentMap = new HashMap<>();
+
+                    // 1. Sum all purchases + per-user totals
+                    for (DataSnapshot purchaseSnap : purchaseSnapshot.getChildren()) {
+
+                        Purchase purchase = purchaseSnap.getValue(Purchase.class);
+
+                        if (purchase != null) {
+
+                            totalCost += purchase.totalPrice;
+
+                            double current = userSpentMap.getOrDefault(purchase.purchasedBy, 0.0);
+
+                            userSpentMap.put(
+                                    purchase.purchasedBy,
+                                    current + purchase.totalPrice
+                            );
+                        }
+                    }
+
+                    double finalTotalCost = totalCost;
+                    usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot userSnapshot) {
+
+                            int numUsers = (int) userSnapshot.getChildrenCount();
+
+                            if (numUsers == 0) return;
+
+                            double average = finalTotalCost / numUsers;
+
+                            Map<String, UserTotal> perUserTotals = new HashMap<>();
+
+                            // 2. Build per-user settlement data
+                            for (DataSnapshot userSnap : userSnapshot.getChildren()) {
+
+                                String uid = userSnap.getKey();
+                                User user = userSnap.getValue(User.class);
+
+                                double spent = userSpentMap.getOrDefault(uid, 0.0);
+
+                                double difference = spent - average;
+
+                                perUserTotals.put(uid, new UserTotal(
+                                        uid,
+                                        user != null ? user.name : "Unknown",
+                                        spent,
+                                        difference
+                                ));
+                            }
+
+                            // 3. Create settlement object
+                            Settlement settlement = new Settlement(
+                                    null,
+                                    System.currentTimeMillis(),
+                                    finalTotalCost,
+                                    average,
+                                    numUsers,
+                                    perUserTotals
+                            );
+
+                            // 4. Save settlement to Firebase
+                            FirebaseDBHelper.getInstance()
+                                    .addSettlement(settlement);
+
+                            Log.d(TAG, "Settlement saved successfully");
+
+                            // 5. Clear purchases AFTER saving
+                            FirebaseDBHelper.getInstance()
+                                    .clearPurchases();
+
+                            Log.d(TAG, "Purchases cleared after settlement");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e(TAG, "User fetch failed: " + error.getMessage());
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "Purchase fetch failed: " + error.getMessage());
+                }
+            });
         });
 
     }

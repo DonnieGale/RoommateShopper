@@ -4,12 +4,14 @@ public class UserTotal {
     public String id; // uid (optional but helpful)
     public String name;
     public double totalSpent;
+    public double differenceFromAverage;
 
     public UserTotal() {}
 
-    public UserTotal(String id, String name, double totalSpent) {
+    public UserTotal(String id, String name, double totalSpent, double differenceFromAverage) {
         this.id = id;
         this.name = name;
         this.totalSpent = totalSpent;
+        this.differenceFromAverage = differenceFromAverage;
     }
 }
