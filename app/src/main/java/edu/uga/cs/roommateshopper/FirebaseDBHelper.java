@@ -137,6 +137,8 @@ public class FirebaseDBHelper {
         return db.child("purchases");
     }
 
+
+
     // 🔄 Checkout: basket → purchase
     public void checkoutBasket(String uid,
                                String userName,
