@@ -1,13 +1,10 @@
 package edu.uga.cs.roommateshopper;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,10 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
-import edu.uga.cs.roommateshopper.placeholder.PlaceholderContent;
 
 
 public class ShoppingBasketFragment extends Fragment {
@@ -73,14 +71,62 @@ public class ShoppingBasketFragment extends Fragment {
         //addTestItem(); // adds a test item
         listenForBasketItems(); // retrieves items and deletes a test item
 
-        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton2);
+        FloatingActionButton checkoutButton = view.findViewById(R.id.checkoutButton);
 
-        fab.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Purchase
+        checkoutButton.setOnClickListener(v -> {
+
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Log.e(TAG, "User not logged in");
+                return;
             }
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String userName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+            DatabaseReference basketRef =
+                    FirebaseDBHelper.getInstance().getBasketRef(uid);
+
+            basketRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if (!snapshot.exists()) {
+                        Log.d(TAG, "Basket is empty");
+                        return;
+                    }
+
+                    Map<String, ShoppingItem> items = new HashMap<>();
+                    double totalPrice = 0;
+
+                    for (DataSnapshot itemSnap : snapshot.getChildren()) {
+
+                        ShoppingItem item = itemSnap.getValue(ShoppingItem.class);
+
+                        if (item != null) {
+                            item.id = itemSnap.getKey();
+                            items.put(item.id, item);
+
+                            totalPrice += item.price;
+                        }
+                    }
+
+                    long timestamp = System.currentTimeMillis();
+
+                    FirebaseDBHelper.getInstance()
+                            .checkoutBasket(uid, userName, items, totalPrice, timestamp);
+
+                    Log.d(TAG, "Checkout complete. Total: " + totalPrice);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, error.getMessage());
+                }
+            });
         });
+
+
     }
 
     private void listenForBasketItems() {
