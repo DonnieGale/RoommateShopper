@@ -36,6 +36,7 @@ public class RoommateFragment extends Fragment {
     Button joinGroup;
     Button createGroup;
     LinearLayout roommatesList;
+    TextView GroupID;
 
     public RoommateFragment() {
         // Required empty public constructor
@@ -68,6 +69,7 @@ public class RoommateFragment extends Fragment {
         joinGroup = view.findViewById(R.id.Join);
         createGroup = view.findViewById(R.id.Invite);
         roommatesList = view.findViewById(R.id.roommatesList);
+        GroupID = view.findViewById(R.id.textView3);
 
         joinGroup.setOnClickListener(v -> {
             DialogFragment newFragment = new JoinGroupFragment();
@@ -86,7 +88,9 @@ public class RoommateFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         currentGroupId = snapshot.getValue(String.class);
+                        GroupID.setText("Group Id: "+ currentGroupId);
                         getRoommates(currentGroupId);
+
                     }
                 }
 
@@ -94,6 +98,7 @@ public class RoommateFragment extends Fragment {
                 public void onCancelled(@NonNull DatabaseError error) {}
             });
         }
+
     }
 
     private void getRoommates(String groupId) {
