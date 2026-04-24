@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,51 +62,40 @@ public class RoommateFragment extends Fragment {
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         roommatesList = view.findViewById(R.id.roommatesList);
 
-
-    }
-
-    private void getRoommates(String groupId) {
-        mDatabase.child("groups").child(groupId).child("members").addValueEventListener(new ValueEventListener() {
+        // Read roommates from Firebase
+        mDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                roommatesList.removeAllViews(); // Clear current list
-                for (DataSnapshot memberSnapshot : snapshot.getChildren()) {
-                    String memberUid = memberSnapshot.getKey();
-                    if (memberUid != null) {
-                        fetchMemberName(memberUid);
+                roommatesList.removeAllViews();
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    String name = userSnapshot.child("name").getValue(String.class);
+                    String email = userSnapshot.child("email").getValue(String.class);
+
+                    String displayLabel = (name != null && !name.isEmpty()) ? name : email;
+
+                    if (displayLabel != null) {
+                        addRoommateToUI(displayLabel);
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
-
-    private void fetchMemberName(String uid) {
-        mDatabase.child("users").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = snapshot.getValue(String.class);
-                    addRoommateToUI(name);
-                }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("RoommateFragment", "Error fetching users: " + error.getMessage());
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+
 
     private void addRoommateToUI(String name) {
         if (getContext() == null) return;
         TextView textView = new TextView(getContext());
         textView.setText(name);
-        textView.setTextSize(16);
-        textView.setPadding(0, 8, 0, 8);
+        textView.setTextSize(18);
+        textView.setPadding(16, 16, 16, 16);
         roommatesList.addView(textView);
     }
+
 }
