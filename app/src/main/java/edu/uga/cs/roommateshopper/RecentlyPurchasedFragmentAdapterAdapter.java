@@ -6,11 +6,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import edu.uga.cs.roommateshopper.models.Purchase;
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapter<RecentlyPurchasedFragmentAdapterAdapter.RecentlyPurchasedHolderHolder> {
@@ -31,7 +34,8 @@ public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapte
                     int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         ShoppingItem item = items.get(position);
-                        // on click
+                        DialogFragment Remove_Purchase_Item = new Remove_Purchase_Item(item);
+                        Remove_Purchase_Item.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
                     }
                 }
             });
