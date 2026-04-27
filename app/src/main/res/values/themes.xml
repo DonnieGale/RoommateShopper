@@ -12,7 +12,7 @@
         <item name="colorSecondary">#2196F3</item> <!-- A stronger blue for buttons -->
         <item name="colorOnSecondary">#FFFFFF</item> <!-- White text on blue buttons -->
         <item name="colorSecondaryContainer">#E3F2FD</item> <!-- Light blue for cards -->
-        <item name="colorOnSecondaryContainer">#000000</item> <!-- Black text on light blue cards -->
+        <item name="colorOnSecondaryContainer">#000000</item>
 
 
         <!-- 3. Navigation Rail/Bottom Nav Colors -->

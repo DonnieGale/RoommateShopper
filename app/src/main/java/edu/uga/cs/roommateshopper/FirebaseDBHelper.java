@@ -64,7 +64,7 @@ public class FirebaseDBHelper {
                 .removeValue();
     }
 
-    public void editPrice(ShoppingItem item, int newPrice){
+    public void editPrice(ShoppingItem item, double newPrice){
         db.child("shopping_list")
                 .child(item.id)
                 .child("price")

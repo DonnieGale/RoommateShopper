@@ -67,8 +67,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ShoppingListHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.ITEM)
-                .setText("ITEM:");
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
                 .setText(item.name);

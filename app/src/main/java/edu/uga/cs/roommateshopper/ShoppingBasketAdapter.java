@@ -58,7 +58,7 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
     @Override
     public ShoppingBasketHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.shopping_list_item, parent, false);
+                .inflate(R.layout.fragment_shopping_basket_list, parent, false);
         return new ShoppingBasketHolder(view);
     }
 
@@ -66,8 +66,6 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
     public void onBindViewHolder(ShoppingBasketHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.ITEM)
-                .setText("ITEM:");
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
                 .setText(item.name);

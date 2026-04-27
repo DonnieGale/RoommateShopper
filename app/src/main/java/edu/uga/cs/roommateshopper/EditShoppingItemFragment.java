@@ -78,6 +78,10 @@ public class EditShoppingItemFragment extends DialogFragment {
         delete = view.findViewById(R.id.DeleteButton);
         textView = view.findViewById(R.id.textView2);
         addToCart = view.findViewById(R.id.AddToCart);
+        name.setText(item.name);
+        price.setText(String.valueOf(item.price));
+        quantity.setText(String.valueOf(item.quantity));
+
 
         // 🛡️ Safety check
         if (item == null) {
@@ -113,7 +117,7 @@ public class EditShoppingItemFragment extends DialogFragment {
             }
 
             FirebaseDBHelper.getInstance().editName(item, nameString);
-            FirebaseDBHelper.getInstance().editPrice(item, Integer.parseInt(priceString));
+            FirebaseDBHelper.getInstance().editPrice(item, Double.parseDouble(priceString));
             FirebaseDBHelper.getInstance().editQuantity(item, Integer.parseInt(quantityString));
 
             dismiss();

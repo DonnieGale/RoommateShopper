@@ -1,57 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 1. Use a root layout that adds a bit of spacing between items -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp">
 
-    <androidx.cardview.widget.CardView
+    <!-- 2. Upgrade to MaterialCardView for better styling -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#E3F2FD">
+        app:cardBackgroundColor="#E3F2FD"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/ITEM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
+            <!-- Item Name: Highlighted and bold -->
             <TextView
                 android:id="@+id/ItemName"
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="Grocery Item"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintEnd_toStartOf="@+id/Cost"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/ItemAdedBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
+            <!-- Cost: Aligned to the top right -->
             <TextView
                 android:id="@+id/Cost"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="$0.00"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Quantity & Metadata: Subtext below the name -->
             <TextView
                 android:id="@+id/Quantity"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.BodySmall"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
-        </LinearLayout>
+                android:layout_marginTop="2dp"
+                android:text="Quantity: 1"
+                android:alpha="0.7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ItemName" />
 
-    </androidx.cardview.widget.CardView>
+            <!-- Divider line to separate metadata -->
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="?android:attr/listDivider"
+                android:alpha="0.1"
+                app:layout_constraintTop_toBottomOf="@id/Quantity" />
+
+            <!-- Footer: Who added it and when -->
+            <TextView
+                android:id="@+id/ItemAdedBy"
+                style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:text="Added by"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
