@@ -1,8 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.RoommateShopper" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- 1. Primary Colors (Black) -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#333333</item>
+        <item name="colorOnPrimaryContainer">#FFFFFF</item>
+
+        <!-- 2. Secondary Colors (Blue) -->
+        <!-- 2. Secondary Colors (Blue) -->
+        <item name="colorSecondary">#2196F3</item> <!-- A stronger blue for buttons -->
+        <item name="colorOnSecondary">#FFFFFF</item> <!-- White text on blue buttons -->
+        <item name="colorSecondaryContainer">#E3F2FD</item> <!-- Light blue for cards -->
+        <item name="colorOnSecondaryContainer">#000000</item> <!-- Black text on light blue cards -->
+
+
+        <!-- 3. Navigation Rail/Bottom Nav Colors -->
+        <!-- This ensures your icons and selected states match your theme -->
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#000000</item>
+        <item name="colorSurfaceVariant">#F5F5F5</item>
+
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
     </style>
 
     <style name="Theme.RoommateShopper" parent="Base.Theme.RoommateShopper" />
@@ -12,5 +31,18 @@
         <item name="itemSpacing">0dp</item>
         <item name="itemPaddingTop">0dp</item>
         <item name="itemPaddingBottom">0dp</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.NavigationRail</item>
+    </style>
+
+    <!-- Overlay to ensure the Rail uses your specific blue/black scheme -->
+    <style name="ThemeOverlay.App.NavigationRail" parent="">
+        <item name="colorPrimaryContainer">#E3F2FD</item>
+        <item name="colorOnPrimaryContainer">#000000</item>
+    </style>
+
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">#E3F2FD</item>
+        <item name="cardElevation">2dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Material3.Corner.Medium</item>
     </style>
 </resources>
