@@ -24,6 +24,7 @@ public class LoginViewModel extends ViewModel {
     private FirebaseDBHelper db = FirebaseDBHelper.getInstance();
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
+    private String name;
     LoginViewModel() {}
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -62,7 +63,7 @@ public class LoginViewModel extends ViewModel {
 
                                             User newUser = new User();
                                             newUser.id = uid;
-                                            newUser.name = email;
+                                            newUser.name = email.substring(0, email.indexOf('@'));
                                             newUser.email = email;
 
                                             FirebaseDBHelper.getInstance().addUser(newUser);

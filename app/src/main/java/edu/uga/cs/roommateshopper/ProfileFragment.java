@@ -77,13 +77,21 @@ public class ProfileFragment extends Fragment {
             String UserEmail = currentUserObject.getEmail();
 
             TextView welcome = view.findViewById(R.id.Welcome);
-            welcome.setText("Welcome " + UserName + "!");
+            EditText Name = view.findViewById(R.id.Name);
+
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(Uid);
+            userRef.child("name").get().addOnSuccessListener(snapshot -> {
+                if (snapshot.exists()) {
+                    String dbName = snapshot.getValue(String.class);
+                    welcome.setText("Welcome " + dbName + "!");
+                    Name.setText("Name: " + dbName);
+                }
+            });
+
             TextView UID = view.findViewById(R.id.UID);
             UID.setText("User ID: " + Uid);
             TextView Email = view.findViewById(R.id.Email);
             Email.setText("Email: " + UserEmail);
-            EditText Name = view.findViewById(R.id.Name);
-            Name.setText("Name: " + UserName);
             Button button = view.findViewById(R.id.button2);
 
             button.setOnClickListener(v -> {
