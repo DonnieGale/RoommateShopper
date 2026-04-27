@@ -9,7 +9,6 @@ android:layout_height="match_parent"
 android:padding="16dp"
 tools:context=".RoommateFragment">
 
-<!-- Header Section with Material Typography -->
 <TextView
     android:id="@+id/textView"
     style="@style/TextAppearance.Material3.HeadlineSmall"
@@ -21,7 +20,6 @@ tools:context=".RoommateFragment">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-<!-- A Card container makes the list look modern and grouped -->
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/listContainer"
     android:layout_width="0dp"
