@@ -69,7 +69,7 @@ public class RecentlyPurchasedFragmentAdapterAdapter
         ShoppingItem item = items.get(position);
 
         ((TextView) holder.itemView.findViewById(R.id.itemID))
-                .setText(item.id);
+                .setText("ITEM:");
 
         ((TextView) holder.itemView.findViewById(R.id.ItemName))
                 .setText(item.name);
