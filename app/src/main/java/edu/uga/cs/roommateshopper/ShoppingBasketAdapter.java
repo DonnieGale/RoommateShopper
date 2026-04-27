@@ -67,23 +67,23 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
     public void onBindViewHolder(ShoppingBasketHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        holder.itemView.<TextView>findViewById(R.id.itemID)
-                .setText(item.id);
+        holder.itemView.<android.widget.TextView>findViewById(R.id.itemID)
+                .setText("ITEM:");
 
-        holder.itemView.<TextView>findViewById(R.id.ItemName)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
                 .setText(item.name);
 
-        holder.itemView.<TextView>findViewById(R.id.ItemAdedBy)
-                .setText(item.addedBy);
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemAdedBy)
+                .setText("Added By: " + item.addedBy);
 
-        holder.itemView.<TextView>findViewById(R.id.ItemTime)
-                .setText(String.valueOf(item.timestamp));
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
+                .setText("Time Added: " + String.valueOf(item.timestamp));
 
-        holder.itemView.<TextView>findViewById(R.id.Spent)
-                .setText(String.valueOf(item.price));
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Spent)
+                .setText("Cost: $" + String.format("%.2f", item.price));
 
-        holder.itemView.<TextView>findViewById(R.id.Difference)
-                .setText(String.valueOf(item.quantity));
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Difference)
+                .setText("Quantity: " + String.valueOf(item.quantity));
     }
 
     @Override

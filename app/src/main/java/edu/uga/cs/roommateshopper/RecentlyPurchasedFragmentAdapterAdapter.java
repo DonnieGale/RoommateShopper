@@ -75,16 +75,16 @@ public class RecentlyPurchasedFragmentAdapterAdapter
                 .setText(item.name);
 
         ((TextView) holder.itemView.findViewById(R.id.ItemAdedBy))
-                .setText(item.addedBy);
+                .setText("Added By: " + item.addedBy);
 
         ((TextView) holder.itemView.findViewById(R.id.ItemTime))
-                .setText(String.valueOf(item.timestamp));
+                .setText("Time Added: " + String.valueOf(item.timestamp));
 
         ((TextView) holder.itemView.findViewById(R.id.Spent))
-                .setText(String.valueOf(item.price));
+                .setText("Cost: $" + String.format("%.2f", item.price));
 
         ((TextView) holder.itemView.findViewById(R.id.Difference))
-                .setText(String.valueOf(item.quantity));
+                .setText("Quantity: " + String.valueOf(item.quantity));
     }
 
     @Override
