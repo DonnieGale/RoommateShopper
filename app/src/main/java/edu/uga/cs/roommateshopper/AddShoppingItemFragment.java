@@ -35,7 +35,6 @@ public class AddShoppingItemFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getDialog() != null && getDialog().getWindow() != null) {
-            // Set the width to Match Parent and height to Wrap Content
             getDialog().getWindow().setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -46,7 +45,6 @@ public class AddShoppingItemFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_shopping_item, container, false);
     }
 
@@ -59,77 +57,93 @@ public class AddShoppingItemFragment extends DialogFragment {
         quantity = view.findViewById(R.id.editText3);
         Button saveButton = view.findViewById(R.id.button);
 
-        saveButton.setOnClickListener(new ButtonClickListener());
+        saveButton.setOnClickListener(v -> addItem());
     }
 
-    private class ButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            String nameString = itemName.getText().toString();
-            String priceString = price.getText().toString();
-            String QuantityVal = quantity.getText().toString();
+    private void addItem() {
+        String nameString = itemName.getText().toString();
+        String priceString = price.getText().toString();
+        String quantityString = quantity.getText().toString();
 
-            if (nameString.isEmpty()) {
-                itemName.setError("Name required");
-                return;
+        if (nameString.isEmpty()) {
+            itemName.setError("Name required");
+            return;
+        }
+
+        double priceValue;
+        int quantityNum;
+
+        try {
+            priceValue = priceString.isEmpty() ? 0 : Double.parseDouble(priceString);
+        } catch (NumberFormatException e) {
+            price.setError("Invalid price");
+            return;
+        }
+
+        try {
+            quantityNum = quantityString.isEmpty() ? 0 : Integer.parseInt(quantityString);
+        } catch (NumberFormatException e) {
+            quantity.setError("Invalid quantity");
+            return;
+        }
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+
+        String uid = currentUser.getUid();
+
+        DatabaseReference userRef =
+                FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+        DatabaseReference shoppingRef =
+                FirebaseDatabase.getInstance().getReference("shopping_list");
+
+        // 🔥 Fetch user's display name from database
+        userRef.get().addOnSuccessListener(snapshot -> {
+
+            String addedBy = snapshot.child("name").getValue(String.class);
+
+            // fallback safety
+            if (addedBy == null || addedBy.isEmpty()) {
+                addedBy = currentUser.getEmail();
             }
 
-            double priceValue = 0;
-            try {
-                if (!priceString.isEmpty()) {
-                    priceValue = Double.parseDouble(priceString);
-                }
-            } catch (NumberFormatException e) {
-                price.setError("Invalid price");
-                return;
-            }
-            int quantityNum = 0;
-            try {
-                if (!QuantityVal.isEmpty()) {
-                    quantityNum = Integer.parseInt(QuantityVal);
-                }
-            } catch (NumberFormatException e) {
-                price.setError("Invalid Quantity");
-                return;
-            }
+            ShoppingItem item = new ShoppingItem(
+                    null,
+                    nameString,
+                    addedBy,
+                    System.currentTimeMillis(),
+                    priceValue,
+                    quantityNum
+            );
 
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            // Add a new element to the list in Firebase.
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("shopping_list");
-            String addedBy = currentUser.getEmail();
-
-            final ShoppingItem item = new ShoppingItem(null, nameString, addedBy, System.currentTimeMillis(), priceValue, quantityNum);
-
-
-            myRef.push().setValue(item)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // Show a quick confirmation
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), "Item added: " + item.name,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
-                            // Clear the EditTexts for next use.
-                            itemName.setText("");
-                            price.setText("");
-                            quantity.setText("");
-
-                            // Close the dialog
-                            dismiss();
+            shoppingRef.push().setValue(item)
+                    .addOnSuccessListener(unused -> {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(),
+                                    "Item added: " + item.name,
+                                    Toast.LENGTH_SHORT).show();
                         }
+
+                        itemName.setText("");
+                        price.setText("");
+                        quantity.setText("");
+
+                        dismiss();
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            if (getActivity() != null) {
-                                Toast.makeText(getActivity(), "Failed to add item: " + item.name,
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnFailureListener(e -> {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(),
+                                    "Failed to add item",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
-        }
+        }).addOnFailureListener(e -> {
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(),
+                        "Failed to load user info",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
