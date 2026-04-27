@@ -83,16 +83,6 @@ public class RecentlyPurchasedFragment extends Fragment {
                     FirebaseDBHelper.getInstance().getUsersRef();
 
 
-
-            /*Settlement test = new Settlement();
-            test.totalCost = 100;
-            test.timestamp = System.currentTimeMillis();
-
-            FirebaseDBHelper.getInstance().addSettlement(test);
-*/
-
-
-
             purchasesRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
 

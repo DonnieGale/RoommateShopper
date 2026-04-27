@@ -34,7 +34,7 @@ android:paddingVertical="6dp">
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/Spent"
+            android:id="@+id/Cost"
             style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@ android:paddingVertical="6dp">
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/Difference"
+                android:id="@+id/Quantity"
                 style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

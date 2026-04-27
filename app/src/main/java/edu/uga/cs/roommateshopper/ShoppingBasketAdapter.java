@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,7 +66,7 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
     public void onBindViewHolder(ShoppingBasketHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.itemID)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ITEM)
                 .setText("ITEM:");
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
@@ -80,10 +79,10 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
                 .setText("Time Added: " + String.valueOf(item.timestamp));
         */
-        holder.itemView.<android.widget.TextView>findViewById(R.id.Spent)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Cost)
                 .setText("Cost: $" + String.format("%.2f", item.price));
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.Difference)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Quantity)
                 .setText("Quantity: " + String.valueOf(item.quantity));
     }
 

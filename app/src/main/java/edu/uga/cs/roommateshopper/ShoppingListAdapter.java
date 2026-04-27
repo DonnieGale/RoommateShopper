@@ -67,7 +67,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ShoppingListHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.itemID)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ITEM)
                 .setText("ITEM:");
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
@@ -82,10 +82,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
          */
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.Spent)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Cost)
                 .setText("Cost: $" + String.format("%.2f", item.price));
 
-        holder.itemView.<android.widget.TextView>findViewById(R.id.Difference)
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Quantity)
                 .setText("Quantity: " + String.valueOf(item.quantity));
     }
 

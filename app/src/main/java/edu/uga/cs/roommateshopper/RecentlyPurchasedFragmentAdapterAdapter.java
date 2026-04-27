@@ -68,23 +68,16 @@ public class RecentlyPurchasedFragmentAdapterAdapter
     public void onBindViewHolder(RecentlyPurchasedHolderHolder holder, int position) {
         ShoppingItem item = items.get(position);
 
-        ((TextView) holder.itemView.findViewById(R.id.itemID))
-                .setText("ITEM:");
-
         ((TextView) holder.itemView.findViewById(R.id.ItemName))
                 .setText(item.name);
 
         ((TextView) holder.itemView.findViewById(R.id.ItemAdedBy))
                 .setText("Added By: " + item.addedBy);
 
-        /*
-        ((TextView) holder.itemView.findViewById(R.id.ItemTime))
-                .setText("Time Added: " + String.valueOf(item.timestamp));
-        */
-        ((TextView) holder.itemView.findViewById(R.id.Spent))
+        ((TextView) holder.itemView.findViewById(R.id.Cost))
                 .setText("Cost: $" + String.format("%.2f", item.price));
 
-        ((TextView) holder.itemView.findViewById(R.id.Difference))
+        ((TextView) holder.itemView.findViewById(R.id.Quantity))
                 .setText("Quantity: " + String.valueOf(item.quantity));
     }
 

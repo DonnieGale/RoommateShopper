@@ -28,13 +28,14 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
         CardView cardView;
         TextView textView;
         RecyclerView recycler;
+        TextView textView2;
 
         public RecentlyPurchasedHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             textView = itemView.findViewById(R.id.textView5);
             recycler = itemView.findViewById(R.id.recycler);
-
+            textView2 = itemView.findViewById(R.id.TotalPrice);
             if (recycler != null) {
                 recycler.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             }
@@ -65,8 +66,8 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
     @Override
     public void onBindViewHolder(RecentlyPurchasedHolder holder, int position ) {
         Purchase purchase = purchases.get(position);
-        holder.textView.setText("Purchased by: " + purchase.purchasedByName + " Total: $" + String.format("%.2f", purchase.totalPrice));
-        
+        holder.textView.setText("Purchased by: " + purchase.purchasedByName);
+        holder.textView2.setText("Total Price: $" + String.format("%.2f", purchase.totalPrice));
         List<ShoppingItem> items = new ArrayList<>();
         if (purchase.items != null) {
             items.addAll(purchase.items.values());

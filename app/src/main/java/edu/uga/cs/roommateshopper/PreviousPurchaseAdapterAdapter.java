@@ -1,7 +1,6 @@
 package edu.uga.cs.roommateshopper;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -31,8 +30,8 @@ public class PreviousPurchaseAdapterAdapter extends RecyclerView.Adapter<Previou
         public UserTotalHolder(View itemView) {
             super(itemView);
             person = itemView.findViewById(R.id.Person);
-            spent = itemView.findViewById(R.id.Spent);
-            difference = itemView.findViewById(R.id.Difference);
+            spent = itemView.findViewById(R.id.Cost);
+            difference = itemView.findViewById(R.id.Quantity);
         }
     }
 
