@@ -1,6 +1,8 @@
 package edu.uga.cs.roommateshopper.models;
 
-public class ShoppingItem {
+import java.io.Serializable;
+
+public class ShoppingItem implements Serializable {
     public String id; // itemId
     public String name;
     public String addedBy;

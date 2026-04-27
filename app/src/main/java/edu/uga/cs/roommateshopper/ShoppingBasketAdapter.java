@@ -25,79 +25,69 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
         for (ShoppingItem item : items) {
             Log.d("ShoppingBasketAdapter", "Item: " + item.name);
         }
-
     }
 
     class ShoppingBasketHolder extends RecyclerView.ViewHolder {
         CardView cardView;
+
         public ShoppingBasketHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
+            cardView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
 
-                public void onClick(View v) {
-                    int position = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        ShoppingItem item = items.get(position);
-                        DialogFragment MoveBackFragment = new MoveBackFragment(item);
-                        MoveBackFragment.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
-                        Log.d("ShoppingListAdapter", "Item clicked: " + item.name);
-                    }
+                if (position != RecyclerView.NO_POSITION) {
+                    ShoppingItem item = items.get(position);
+
+                    // 🔑 FIX: use newInstance()
+                    DialogFragment moveBackFragment =
+                            MoveBackFragment.newInstance(item);
+
+                    moveBackFragment.show(
+                            ((AppCompatActivity) v.getContext()).getSupportFragmentManager(),
+                            "move_back"
+                    );
+
+                    Log.d("ShoppingBasketAdapter", "Item clicked: " + item.name);
                 }
-
             });
         }
-
     }
 
     @NonNull
     @Override
-    public ShoppingBasketHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
-        View view = LayoutInflater.from( parent.getContext()).inflate( R.layout.shopping_list_item, parent, false );
-        return new ShoppingBasketHolder( view);
+    public ShoppingBasketHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.shopping_list_item, parent, false);
+        return new ShoppingBasketHolder(view);
     }
-
 
     @Override
-    public void onBindViewHolder( ShoppingBasketHolder holder, int position ) {
+    public void onBindViewHolder(ShoppingBasketHolder holder, int position) {
         ShoppingItem item = items.get(position);
-        TextView itemID = holder.itemView.findViewById(R.id.itemID);
-        TextView itemName = holder.itemView.findViewById(R.id.ItemName);
-        TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
-        TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
-        TextView itemPrice = holder.itemView.findViewById(R.id.Spent);
-        TextView itemQuantity = holder.itemView.findViewById(R.id.Difference);
 
+        holder.itemView.<TextView>findViewById(R.id.itemID)
+                .setText(item.id);
 
-        String id = item.id;
-        String name = item.name;
-        String addedBy = item.addedBy;
-        long timestamp = item.timestamp;
-        Double price = item.price;
-        int number = item.quantity;
+        holder.itemView.<TextView>findViewById(R.id.ItemName)
+                .setText(item.name);
 
-        itemID.setText(id);
-        itemName.setText(name);
-        itemAddedBy.setText(addedBy);
-        itemTime.setText(String.valueOf(timestamp));
-        itemPrice.setText(String.valueOf(price));
-        itemQuantity.setText(String.valueOf(number));
+        holder.itemView.<TextView>findViewById(R.id.ItemAdedBy)
+                .setText(item.addedBy);
 
+        holder.itemView.<TextView>findViewById(R.id.ItemTime)
+                .setText(String.valueOf(item.timestamp));
+
+        holder.itemView.<TextView>findViewById(R.id.Spent)
+                .setText(String.valueOf(item.price));
+
+        holder.itemView.<TextView>findViewById(R.id.Difference)
+                .setText(String.valueOf(item.quantity));
     }
-
-
-
-
-
-
 
     @Override
     public int getItemCount() {
-        if( items != null ) {
-            return items.size();
-        } else {
-            return 0;
-        }
+        return items != null ? items.size() : 0;
     }
 }

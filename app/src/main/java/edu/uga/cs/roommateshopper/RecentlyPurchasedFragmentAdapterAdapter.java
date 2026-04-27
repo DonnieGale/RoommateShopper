@@ -15,7 +15,8 @@ import java.util.List;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
-public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapter<RecentlyPurchasedFragmentAdapterAdapter.RecentlyPurchasedHolderHolder> {
+public class RecentlyPurchasedFragmentAdapterAdapter
+        extends RecyclerView.Adapter<RecentlyPurchasedFragmentAdapterAdapter.RecentlyPurchasedHolderHolder> {
 
     List<ShoppingItem> items;
     private String purchaseId;
@@ -26,63 +27,68 @@ public class RecentlyPurchasedFragmentAdapterAdapter extends RecyclerView.Adapte
     }
 
     class RecentlyPurchasedHolderHolder extends RecyclerView.ViewHolder {
+
         CardView cardView;
+
         public RecentlyPurchasedHolderHolder(View itemView) {
             super(itemView);
+
             cardView = itemView.findViewById(R.id.cardView);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    int position = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        ShoppingItem item = items.get(position);
-                        DialogFragment Remove_Purchase_Item = new Remove_Purchase_Item(item,purchaseId);
-                        Remove_Purchase_Item.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
-                    }
+
+            cardView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+
+                if (position != RecyclerView.NO_POSITION) {
+                    ShoppingItem item = items.get(position);
+
+                    // ✅ FIX: use newInstance()
+                    DialogFragment fragment =
+                            Remove_Purchase_Item.newInstance(item, purchaseId);
+
+                    fragment.show(
+                            ((AppCompatActivity) v.getContext())
+                                    .getSupportFragmentManager(),
+                            "remove_purchase"
+                    );
                 }
             });
         }
     }
+
     @NonNull
     @Override
-    public RecentlyPurchasedHolderHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
-        View view = LayoutInflater.from( parent.getContext()).inflate( R.layout.fragment_recently_purchased_item, parent, false );
+    public RecentlyPurchasedHolderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_recently_purchased_item, parent, false);
+
         return new RecentlyPurchasedHolderHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecentlyPurchasedHolderHolder holder, int position ) {
+    public void onBindViewHolder(RecentlyPurchasedHolderHolder holder, int position) {
         ShoppingItem item = items.get(position);
-        TextView itemID = holder.itemView.findViewById(R.id.itemID);
-        TextView itemName = holder.itemView.findViewById(R.id.ItemName);
-        TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
-        TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
-        TextView itemPrice = holder.itemView.findViewById(R.id.Spent);
-        TextView itemQuantity = holder.itemView.findViewById(R.id.Difference);
 
+        ((TextView) holder.itemView.findViewById(R.id.itemID))
+                .setText(item.id);
 
-        String id = item.id;
-        String name = item.name;
-        String addedBy = item.addedBy;
-        long timestamp = item.timestamp;
-        Double price = item.price;
-        int number = item.quantity;
+        ((TextView) holder.itemView.findViewById(R.id.ItemName))
+                .setText(item.name);
 
-        itemID.setText(id);
-        itemName.setText(name);
-        itemAddedBy.setText(addedBy);
-        itemTime.setText(String.valueOf(timestamp));
-        itemPrice.setText(String.valueOf(price));
-        itemQuantity.setText(String.valueOf(number));
+        ((TextView) holder.itemView.findViewById(R.id.ItemAdedBy))
+                .setText(item.addedBy);
+
+        ((TextView) holder.itemView.findViewById(R.id.ItemTime))
+                .setText(String.valueOf(item.timestamp));
+
+        ((TextView) holder.itemView.findViewById(R.id.Spent))
+                .setText(String.valueOf(item.price));
+
+        ((TextView) holder.itemView.findViewById(R.id.Difference))
+                .setText(String.valueOf(item.quantity));
     }
 
     @Override
     public int getItemCount() {
-        if( items != null ) {
-            return items.size();
-        } else {
-            return 0;
-        }
+        return items != null ? items.size() : 0;
     }
-
-
 }

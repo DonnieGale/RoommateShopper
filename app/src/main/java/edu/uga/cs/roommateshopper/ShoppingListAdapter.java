@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,79 +25,69 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         for (ShoppingItem item : items) {
             Log.d("ShoppingListAdapter", "Item: " + item.name);
         }
-
     }
 
     class ShoppingListHolder extends RecyclerView.ViewHolder {
         CardView cardView;
+
         public ShoppingListHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
+            cardView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
 
-                public void onClick(View v) {
-                    int position = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        ShoppingItem item = items.get(position);
-                        DialogFragment editShoppingItemFragment = new EditShoppingItemFragment(item);
-                        editShoppingItemFragment.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), null);
-                        Log.d("ShoppingListAdapter", "Item clicked: " + item.name);
-                    }
+                if (position != RecyclerView.NO_POSITION) {
+                    ShoppingItem item = items.get(position);
+
+                    // 🔑 FIX: use newInstance instead of constructor
+                    DialogFragment editShoppingItemFragment =
+                            EditShoppingItemFragment.newInstance(item);
+
+                    editShoppingItemFragment.show(
+                            ((AppCompatActivity) v.getContext()).getSupportFragmentManager(),
+                            "edit_item"
+                    );
+
+                    Log.d("ShoppingListAdapter", "Item clicked: " + item.name);
                 }
-
             });
         }
-
     }
 
     @NonNull
     @Override
-    public ShoppingListHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
-        View view = LayoutInflater.from( parent.getContext()).inflate( R.layout.shopping_list_item, parent, false );
-        return new ShoppingListHolder( view);
+    public ShoppingListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.shopping_list_item, parent, false);
+        return new ShoppingListHolder(view);
     }
-
 
     @Override
-    public void onBindViewHolder( ShoppingListHolder holder, int position ) {
+    public void onBindViewHolder(ShoppingListHolder holder, int position) {
         ShoppingItem item = items.get(position);
-        TextView itemID = holder.itemView.findViewById(R.id.itemID);
-        TextView itemName = holder.itemView.findViewById(R.id.ItemName);
-        TextView itemAddedBy = holder.itemView.findViewById(R.id.ItemAdedBy);
-        TextView itemTime = holder.itemView.findViewById(R.id.ItemTime);
-        TextView itemPrice = holder.itemView.findViewById(R.id.Spent);
-        TextView itemQuantity = holder.itemView.findViewById(R.id.Difference);
 
+        holder.itemView.<android.widget.TextView>findViewById(R.id.itemID)
+                .setText(item.id);
 
-        String id = item.id;
-        String name = item.name;
-        String addedBy = item.addedBy;
-        long timestamp = item.timestamp;
-        Double price = item.price;
-        int number = item.quantity;
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemName)
+                .setText(item.name);
 
-        itemID.setText(id);
-        itemName.setText(name);
-        itemAddedBy.setText(addedBy);
-        itemTime.setText(String.valueOf(timestamp));
-        itemPrice.setText(String.valueOf(price));
-        itemQuantity.setText(String.valueOf(number));
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemAdedBy)
+                .setText(item.addedBy);
 
+        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
+                .setText(String.valueOf(item.timestamp));
+
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Spent)
+                .setText(String.valueOf(item.price));
+
+        holder.itemView.<android.widget.TextView>findViewById(R.id.Difference)
+                .setText(String.valueOf(item.quantity));
     }
-
-
-
-
-
-
 
     @Override
     public int getItemCount() {
-        if( items != null ) {
-            return items.size();
-        } else {
-            return 0;
-        }
+        return items != null ? items.size() : 0;
     }
 }

@@ -18,46 +18,52 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
+
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
-
 public class EditShoppingItemFragment extends DialogFragment {
+
     EditText price;
     TextView textView;
     EditText name;
+    EditText quantity;
 
     Button save;
     Button delete;
+    Button addToCart;
 
     ShoppingItem item;
-    EditText quantity;
-
-
-    Button addToCart;
 
     public EditShoppingItemFragment() {
         // Required empty public constructor
     }
 
-    public EditShoppingItemFragment(ShoppingItem item) {
-        this.item = item;
-        // Required empty public constructor
-    }
-
+    // ✅ Proper way to pass data
     public static EditShoppingItemFragment newInstance(ShoppingItem item) {
-        EditShoppingItemFragment fragment = new EditShoppingItemFragment(item);
+        EditShoppingItemFragment fragment = new EditShoppingItemFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable("item", item); // 🔑 IMPORTANT
+
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 🔑 Restore item after rotation
+        if (getArguments() != null) {
+            item = (ShoppingItem) getArguments().getSerializable("item");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_edit_shopping_item, container, false);
     }
 
@@ -71,77 +77,61 @@ public class EditShoppingItemFragment extends DialogFragment {
         save = view.findViewById(R.id.Save);
         delete = view.findViewById(R.id.DeleteButton);
         textView = view.findViewById(R.id.textView2);
-        textView.setText("Edit: " + item.name);
-
-
         addToCart = view.findViewById(R.id.AddToCart);
 
+        // 🛡️ Safety check
+        if (item == null) {
+            Log.e(TAG, "Item is null in EditShoppingItemFragment");
+            dismiss(); // prevent crash
+            return;
+        }
 
+        textView.setText("Edit: " + item.name);
 
-
-        delete.setOnClickListener(new View.OnClickListener() {
-
-            boolean hasDeleted = false; // prevent multiple deletes
-            @Override
-            public void onClick(View v) {
-                if (!hasDeleted) {
-                    hasDeleted = true;
-                    FirebaseDBHelper.getInstance()
-                            .deleteShoppingItem(item.id);
-
-                    Log.d(TAG, "Deleted item with ID: " + item.id);
-                }
-                dismiss();
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameString = name.getText().toString();
-                String priceString = price.getText().toString();
-                String quantityString = quantity.getText().toString();
-
-                if (nameString.isEmpty()) {
-                    name.setError("Name required");
-                    return;
-                }
-                if(priceString.isEmpty()){
-                    price.setError("Price Required");
-                    return;
-                }
-                if(quantityString.isEmpty()){
-                    quantity.setError("Quantity Required");
-                    return;
-                }
-                FirebaseDBHelper.getInstance().editName(item, nameString);
-                FirebaseDBHelper.getInstance().editPrice(item, Integer.parseInt(priceString));
-                FirebaseDBHelper.getInstance().editQuantity(item, Integer.parseInt(quantityString));
-
-                dismiss();
-
-
-            }
+        delete.setOnClickListener(v -> {
+            FirebaseDBHelper.getInstance().deleteShoppingItem(item.id);
+            Log.d(TAG, "Deleted item with ID: " + item.id);
+            dismiss();
         });
 
+        save.setOnClickListener(v -> {
+            String nameString = name.getText().toString();
+            String priceString = price.getText().toString();
+            String quantityString = quantity.getText().toString();
 
-        addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (item == null || item.id == null) {
-                    Log.e(TAG, "Item or item ID is null");
-                    return;
-                }
-
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                FirebaseDBHelper.getInstance()
-                        .moveItemToBasket(uid, item);
-
-                Log.d(TAG, "Moved item to basket: " + item.name);
-
-                dismiss();
+            if (nameString.isEmpty()) {
+                name.setError("Name required");
+                return;
             }
+            if (priceString.isEmpty()) {
+                price.setError("Price Required");
+                return;
+            }
+            if (quantityString.isEmpty()) {
+                quantity.setError("Quantity Required");
+                return;
+            }
+
+            FirebaseDBHelper.getInstance().editName(item, nameString);
+            FirebaseDBHelper.getInstance().editPrice(item, Integer.parseInt(priceString));
+            FirebaseDBHelper.getInstance().editQuantity(item, Integer.parseInt(quantityString));
+
+            dismiss();
+        });
+
+        addToCart.setOnClickListener(v -> {
+            if (item.id == null) {
+                Log.e(TAG, "Item ID is null");
+                return;
+            }
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseDBHelper.getInstance().moveItemToBasket(uid, item);
+
+            Log.d(TAG, "Moved item to basket: " + item.name);
+
+            dismiss();
         });
     }
 }

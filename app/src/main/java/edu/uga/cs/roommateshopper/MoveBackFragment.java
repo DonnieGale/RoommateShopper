@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +14,27 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
+
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 public class MoveBackFragment extends DialogFragment {
 
-   Button button;
-   ShoppingItem item;
+    Button button;
+    ShoppingItem item;
 
-
-
-    public MoveBackFragment(ShoppingItem item) {
-        this.item = item;
+    // ✅ REQUIRED empty constructor
+    public MoveBackFragment() {
     }
 
-
+    // ✅ Proper way to pass data
     public static MoveBackFragment newInstance(ShoppingItem item) {
-        MoveBackFragment fragment = new MoveBackFragment(item);
+        MoveBackFragment fragment = new MoveBackFragment();
 
+        Bundle args = new Bundle();
+        args.putSerializable("item", item); // 🔑 critical
+
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -38,12 +42,16 @@ public class MoveBackFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 🔑 Restore item after rotation
+        if (getArguments() != null) {
+            item = (ShoppingItem) getArguments().getSerializable("item");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_move_back, container, false);
     }
 
@@ -53,15 +61,20 @@ public class MoveBackFragment extends DialogFragment {
 
         button = view.findViewById(R.id.button3);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // 🛡️ Prevent crash if something goes wrong
+        if (item == null) {
+            Log.e("MoveBackFragment", "Item is null after recreation");
+            dismiss();
+            return;
+        }
 
-                FirebaseDBHelper.getInstance()
-                        .moveItemToShoppingList(uid, item);
-                dismiss();
-            }
+        button.setOnClickListener(v -> {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseDBHelper.getInstance()
+                    .moveItemToShoppingList(uid, item);
+
+            dismiss();
         });
     }
 }

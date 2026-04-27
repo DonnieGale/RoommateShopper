@@ -14,12 +14,15 @@ import android.widget.Button;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
-
 public class Remove_Purchase_Item extends DialogFragment {
 
     public static final String TAG = "Remove_Purchase_Item";
 
+    private static final String ARG_ITEM = "item";
+    private static final String ARG_PURCHASE_ID = "purchase_id";
+
     Button removeFromPurchaseButton;
+
     ShoppingItem item;
     String purchaseId;
 
@@ -27,35 +30,47 @@ public class Remove_Purchase_Item extends DialogFragment {
         // Required empty public constructor
     }
 
-    public Remove_Purchase_Item(ShoppingItem item, String purchaseId) {
-        this.item = item;
-        this.purchaseId = purchaseId;
-    }
-
-
     public static Remove_Purchase_Item newInstance(ShoppingItem item, String purchaseId) {
-        Remove_Purchase_Item fragment = new Remove_Purchase_Item(item,purchaseId);
+        Remove_Purchase_Item fragment = new Remove_Purchase_Item();
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_ITEM, item);
+        args.putString(ARG_PURCHASE_ID, purchaseId);
+
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            item = (ShoppingItem) getArguments().getSerializable(ARG_ITEM);
+            purchaseId = getArguments().getString(ARG_PURCHASE_ID);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_remove__purchase__item, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         removeFromPurchaseButton = view.findViewById(R.id.removeFromPurchaseButton);
+
+        // 🛡️ Safety check (prevents Firebase crash)
+        if (item == null || purchaseId == null) {
+            Log.e(TAG, "Item or purchaseId is null after rotation");
+            dismiss();
+            return;
+        }
+
         removeFromPurchaseButton.setOnClickListener(v -> {
-                //FirebaseDBHelper.getInstance().(item);
             FirebaseDBHelper.getInstance()
                     .removeItemFromPurchaseAndUpdate(purchaseId, item);
 
@@ -63,5 +78,4 @@ public class Remove_Purchase_Item extends DialogFragment {
             dismiss();
         });
     }
-
 }

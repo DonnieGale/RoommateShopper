@@ -30,6 +30,8 @@ public class Splash extends Fragment {
 
     BottomNavigationView bottomNavigationView;
 
+    private int selectedNavItem = R.id.action_shoppingList;
+
     public Splash() {
         // Required empty public constructor
     }
@@ -38,12 +40,19 @@ public class Splash extends Fragment {
     public static Splash newInstance() {
         Splash fragment = new Splash();
         Bundle args = new Bundle();
+
+        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            selectedNavItem = savedInstanceState.getInt("selected_nav", R.id.action_shoppingList);
+        }
     }
 
     @Override
@@ -66,23 +75,34 @@ public class Splash extends Fragment {
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_shoppingList) {
+            selectedNavItem = item.getItemId();
+            if (selectedNavItem == R.id.action_shoppingList) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
-            } else if (itemId == R.id.action_shoppingBasket) {
+            } else if (selectedNavItem == R.id.action_shoppingBasket) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingBasketFragment()).commit();
-            } else if (itemId == R.id.action_recentlyPurchased) {
+            } else if (selectedNavItem == R.id.action_recentlyPurchased) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
-            } else if (itemId == R.id.action_prevPurchases) {
+            } else if (selectedNavItem == R.id.action_prevPurchases) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchasesFragment()).commit();
-            } else if (itemId == R.id.action_roommates) {
+            } else if (selectedNavItem == R.id.action_roommates) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new RoommateFragment()).commit();
-            } else if (itemId == R.id.action_profile) {
+            } else if (selectedNavItem == R.id.action_profile) {
                 manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
             }
             return true;
         });
 
+        // 🔑 Restore the selected tab (this triggers the correct fragment load)
+        bottomNavigationView.setSelectedItemId(selectedNavItem);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // 🔑 Save selected tab before rotation
+        outState.putInt("selected_nav", selectedNavItem);
     }
 
 

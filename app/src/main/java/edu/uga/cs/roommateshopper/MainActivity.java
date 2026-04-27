@@ -47,8 +47,9 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-
-        // Not logged in — show login screen
+        // 🔑 CRITICAL FIX: Only add fragments if first launch
+        if (savedInstanceState == null) {
+            // Not logged in — show login screen
             if (currentUser == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
+        }
     }
 
 }
