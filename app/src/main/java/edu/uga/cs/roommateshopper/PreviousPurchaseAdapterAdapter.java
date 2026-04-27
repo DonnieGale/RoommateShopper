@@ -49,7 +49,7 @@ public class PreviousPurchaseAdapterAdapter extends RecyclerView.Adapter<Previou
         
         holder.person.setText(item.name != null ? item.name : "Unknown Roommate");
         holder.spent.setText(String.format(Locale.getDefault(), "Spent: $%.2f", item.totalSpent));
-        holder.difference.setText(String.format(Locale.getDefault(), "Difference: $%.2f", item.differenceFromAverage));
+        holder.difference.setText(String.format(Locale.getDefault(), "$%.2f", item.differenceFromAverage));
     }
 
     @Override
