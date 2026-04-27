@@ -77,9 +77,10 @@ public class RecentlyPurchasedFragmentAdapterAdapter
         ((TextView) holder.itemView.findViewById(R.id.ItemAdedBy))
                 .setText("Added By: " + item.addedBy);
 
+        /*
         ((TextView) holder.itemView.findViewById(R.id.ItemTime))
                 .setText("Time Added: " + String.valueOf(item.timestamp));
-
+        */
         ((TextView) holder.itemView.findViewById(R.id.Spent))
                 .setText("Cost: $" + String.format("%.2f", item.price));
 

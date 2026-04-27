@@ -76,9 +76,10 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemAdedBy)
                 .setText("Added By: " + item.addedBy);
 
+        /*
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
                 .setText("Time Added: " + String.valueOf(item.timestamp));
-
+        */
         holder.itemView.<android.widget.TextView>findViewById(R.id.Spent)
                 .setText("Cost: $" + String.format("%.2f", item.price));
 
