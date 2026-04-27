@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.RoommateShopper" parent="Base.Theme.RoommateShopper" />
+
+    <style name="Widget.App.NavigationRail" parent="Widget.Material3.NavigationRailView">
+        <item name="itemIconSize">12dp</item>
+        <item name="itemSpacing">0dp</item>
+        <item name="itemPaddingTop">0dp</item>
+        <item name="itemPaddingBottom">0dp</item>
+    </style>
 </resources>

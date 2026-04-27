@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_shoppingList"
-        android:title="Shopping List"
+        android:title="List"
         android:icon="@drawable/clipboard" />
     <item
         android:id="@+id/action_shoppingBasket"
         android:icon="@drawable/basket"
-        android:title="Shopping Basket" />
+        android:title="Basket" />
     <item android:id="@+id/action_recentlyPurchased"
         android:title="Purchased"
         android:icon="@drawable/dollar" />
