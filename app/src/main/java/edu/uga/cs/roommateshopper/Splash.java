@@ -1,5 +1,6 @@
 package edu.uga.cs.roommateshopper;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigationrail.NavigationRailView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -29,6 +31,7 @@ public class Splash extends Fragment {
     //private int selectedNavItem = R.id.home;
 
     BottomNavigationView bottomNavigationView;
+    NavigationRailView navigationRail;
 
     private int selectedNavItem = R.id.action_shoppingList;
 
@@ -67,33 +70,63 @@ public class Splash extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
 
-        bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
-
+        int orientation = getResources().getConfiguration().orientation;
         FragmentManager manager = getChildFragmentManager();
 
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            navigationRail = view.findViewById(R.id.navigationRail);
+            navigationRail.setOnItemSelectedListener(item -> {
+                selectedNavItem = item.getItemId();
+                if (selectedNavItem == R.id.action_shoppingList) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
+                } else if (selectedNavItem == R.id.action_shoppingBasket) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingBasketFragment()).commit();
+                } else if (selectedNavItem == R.id.action_recentlyPurchased) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
+                } else if (selectedNavItem == R.id.action_prevPurchases) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchasesFragment()).commit();
+                } else if (selectedNavItem == R.id.action_roommates) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new RoommateFragment()).commit();
+                } else if (selectedNavItem == R.id.action_profile) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
+                }
+                return true;
+            });
+
+            navigationRail.setSelectedItemId(selectedNavItem);
+        } else if ( orientation == Configuration.ORIENTATION_PORTRAIT){
+            bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                selectedNavItem = item.getItemId();
+                if (selectedNavItem == R.id.action_shoppingList) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
+                } else if (selectedNavItem == R.id.action_shoppingBasket) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingBasketFragment()).commit();
+                } else if (selectedNavItem == R.id.action_recentlyPurchased) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
+                } else if (selectedNavItem == R.id.action_prevPurchases) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchasesFragment()).commit();
+                } else if (selectedNavItem == R.id.action_roommates) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new RoommateFragment()).commit();
+                } else if (selectedNavItem == R.id.action_profile) {
+                    manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
+                }
+                return true;
+            });
+
+            // 🔑 Restore the selected tab (this triggers the correct fragment load)
+            bottomNavigationView.setSelectedItemId(selectedNavItem);
+        }
 
 
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            selectedNavItem = item.getItemId();
-            if (selectedNavItem == R.id.action_shoppingList) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingList()).commit();
-            } else if (selectedNavItem == R.id.action_shoppingBasket) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new ShoppingBasketFragment()).commit();
-            } else if (selectedNavItem == R.id.action_recentlyPurchased) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new RecentlyPurchasedFragment()).commit();
-            } else if (selectedNavItem == R.id.action_prevPurchases) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new PrevPurchasesFragment()).commit();
-            } else if (selectedNavItem == R.id.action_roommates) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new RoommateFragment()).commit();
-            } else if (selectedNavItem == R.id.action_profile) {
-                manager.beginTransaction().replace(R.id.fragmentContainerView2, new ProfileFragment()).commit();
-            }
-            return true;
-        });
 
-        // 🔑 Restore the selected tab (this triggers the correct fragment load)
-        bottomNavigationView.setSelectedItemId(selectedNavItem);
+
+
+
+
+
+
 
     }
 
