@@ -27,20 +27,22 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
         <!-- Logout Button: Positioned directly under the image -->
+
+        <!-- Welcome: Aligned to the top of the right column -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button2"
             style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             android:text="Log Out"
-            android:textSize="12sp"
             android:textColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/infoCard"
+            app:layout_constraintStart_toStartOf="@+id/infoCard"
+            app:layout_constraintTop_toBottomOf="@+id/infoCard" />
 
-        <!-- Welcome: Aligned to the top of the right column -->
         <TextView
             android:id="@+id/Welcome"
             style="@style/TextAppearance.Material3.HeadlineSmall"
