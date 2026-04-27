@@ -102,6 +102,7 @@ public class ProfileFragment extends Fragment {
             Name.setOnFocusChangeListener((v, hasFocus) -> {
                 if (!hasFocus) {
                     saveName(Name.getText().toString(), Uid, welcome);
+                    Name.clearFocus();
                 }
             });
 
