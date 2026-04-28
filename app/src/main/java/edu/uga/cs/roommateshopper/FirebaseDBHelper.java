@@ -241,6 +241,9 @@ public class FirebaseDBHelper {
                         newTotal += i.price;
                     }
 
+                    // readd tax
+                    newTotal = newTotal * 1.08;
+
                     purchaseRef.child("totalPrice").setValue(newTotal);
 
                     Log.d("FirebaseDBHelper", "Purchase updated. New total: " + newTotal);
