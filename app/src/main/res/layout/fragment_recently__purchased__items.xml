@@ -43,6 +43,13 @@
                 android:text="Total Price" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/PurchaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
