@@ -1,8 +1,9 @@
 package edu.uga.cs.roommateshopper.models;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Purchase {
+public class Purchase implements Serializable {
     public String id; // purchaseId
     public String purchasedBy;
     public String purchasedByName;

@@ -6,7 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +52,8 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
                     int position = getBindingAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Purchase purchase = purchases.get(position);
-                        // handle click if needed
+                        DialogFragment editPriceFragment = EditPrice.newInstance(purchase);
+                        editPriceFragment.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "edit_price");
                     }
                 });
             }
