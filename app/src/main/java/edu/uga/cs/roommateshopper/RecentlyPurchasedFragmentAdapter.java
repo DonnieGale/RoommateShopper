@@ -70,7 +70,7 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
         Purchase purchase = purchases.get(position);
 
         holder.textView.setText("Purchased by: " + purchase.purchasedByName);
-        holder.textView2.setText("Total Price: $" + String.format("%.2f", purchase.totalPrice));
+        holder.textView2.setText("Total Price: $" + String.format("%.2f", (purchase.totalPrice * 1.08)));
 
         // ✅ FORMAT DATE/TIME
         if (purchase.timestamp != 0) {
