@@ -107,7 +107,7 @@ public class ShoppingBasketFragment extends Fragment {
                             item.id = itemSnap.getKey();
                             items.put(item.id, item);
 
-                            totalPrice += item.price;
+                            totalPrice += (item.price * 1.08);
                         }
                     }
 
