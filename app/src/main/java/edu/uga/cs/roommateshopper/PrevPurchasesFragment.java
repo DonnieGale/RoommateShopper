@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,17 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uga.cs.roommateshopper.models.Purchase;
 import edu.uga.cs.roommateshopper.models.Settlement;
-import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 
 public class PrevPurchasesFragment extends Fragment {
 
-    TextView total;
-    TextView average;
     RecyclerView recycler;
-    Double OverallTotal;
 
     List<Settlement> items;
 

@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
-
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 public class EditShoppingItemFragment extends DialogFragment {

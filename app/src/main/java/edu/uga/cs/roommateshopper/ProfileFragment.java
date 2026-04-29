@@ -5,9 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +32,7 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {}
 
 
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
@@ -71,7 +68,7 @@ public class ProfileFragment extends Fragment {
             User currentUserObject = new User(Uid, currentName, FBEmail);
 
             this.user = currentUserObject.getId();
-            String UserName = currentUserObject.getName();
+
             String UserEmail = currentUserObject.getEmail();
 
             TextView welcome = view.findViewById(R.id.Welcome);

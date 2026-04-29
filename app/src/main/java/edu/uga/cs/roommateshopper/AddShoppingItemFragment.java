@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -101,7 +99,6 @@ public class AddShoppingItemFragment extends DialogFragment {
 
             String addedBy = snapshot.child("name").getValue(String.class);
 
-            // fallback safety
             if (addedBy == null || addedBy.isEmpty()) {
                 addedBy = currentUser.getEmail();
             }

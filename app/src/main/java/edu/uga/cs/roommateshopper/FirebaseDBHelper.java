@@ -116,15 +116,6 @@ public class FirebaseDBHelper {
 
 
 
-    public void addPurchase(Purchase purchase) {
-        String key = db.child("purchases").push().getKey();
-        purchase.id = key;
-
-        db.child("purchases")
-                .child(key)
-                .setValue(purchase);
-    }
-
     public DatabaseReference getPurchasesRef() {
         return db.child("purchases");
     }
@@ -156,20 +147,6 @@ public class FirebaseDBHelper {
                 .removeValue();
     }
 
-
-
-    public void removeItemFromPurchase(String purchaseId,
-                                       String itemId,
-                                       ShoppingItem item) {
-
-        db.child("purchases")
-                .child(purchaseId)
-                .child("items")
-                .child(itemId)
-                .removeValue();
-
-        addShoppingItem(item);
-    }
 
 
     public void updatePurchasePrice(String purchaseId, double newPrice) {

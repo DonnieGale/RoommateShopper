@@ -14,8 +14,6 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
-
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
 public class MoveBackFragment extends DialogFragment {

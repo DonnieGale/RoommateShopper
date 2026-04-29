@@ -21,10 +21,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
 
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private FirebaseDBHelper db = FirebaseDBHelper.getInstance();
-    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-    private String name;
     LoginViewModel() {}
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -50,7 +47,7 @@ public class LoginViewModel extends ViewModel {
                         }
 
                     } else {
-                        // Create new user if login fails
+
                         fAuth.createUserWithEmailAndPassword(username, password)
                                 .addOnCompleteListener(createTask -> {
                                     if (createTask.isSuccessful()) {
