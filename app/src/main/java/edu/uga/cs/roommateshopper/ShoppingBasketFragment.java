@@ -111,7 +111,12 @@ public class ShoppingBasketFragment extends Fragment {
             }
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            String userName1 = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            if (userName1 == null || userName1.isEmpty()) {
+                userName1 = userEmail.substring(0, userEmail.indexOf('@'));
+            }
+            String userName = userName1;
 
             DatabaseReference basketRef =
                     FirebaseDBHelper.getInstance().getBasketRef(uid);
