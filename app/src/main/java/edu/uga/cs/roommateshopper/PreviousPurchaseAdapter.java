@@ -39,7 +39,6 @@ public class PreviousPurchaseAdapter extends RecyclerView.Adapter<PreviousPurcha
             total = itemView.findViewById(R.id.textView9);
             average = itemView.findViewById(R.id.textView10);
 
-            // Optional: Set a layout manager once if the recycler view is reused properly
             if (recycler != null) {
                 recycler.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             }

@@ -1,7 +1,7 @@
 package edu.uga.cs.roommateshopper.models;
 
 public class UserTotal {
-    public String id; // uid (optional but helpful)
+    public String id;
     public String name;
     public double totalSpent;
     public double differenceFromAverage;

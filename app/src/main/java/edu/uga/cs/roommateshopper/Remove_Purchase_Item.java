@@ -26,9 +26,7 @@ public class Remove_Purchase_Item extends DialogFragment {
     ShoppingItem item;
     String purchaseId;
 
-    public Remove_Purchase_Item() {
-        // Required empty public constructor
-    }
+    public Remove_Purchase_Item() {}
 
     public static Remove_Purchase_Item newInstance(ShoppingItem item, String purchaseId) {
         Remove_Purchase_Item fragment = new Remove_Purchase_Item();
@@ -63,7 +61,6 @@ public class Remove_Purchase_Item extends DialogFragment {
 
         removeFromPurchaseButton = view.findViewById(R.id.removeFromPurchaseButton);
 
-        // 🛡️ Safety check (prevents Firebase crash)
         if (item == null || purchaseId == null) {
             Log.e(TAG, "Item or purchaseId is null after rotation");
             dismiss();

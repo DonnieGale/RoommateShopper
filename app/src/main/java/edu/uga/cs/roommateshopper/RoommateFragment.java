@@ -35,9 +35,7 @@ public class RoommateFragment extends Fragment {
 
     LinearLayout roommatesList;
 
-    public RoommateFragment() {
-        // Required empty public constructor
-    }
+    public RoommateFragment() {}
 
     public static RoommateFragment newInstance() {
         RoommateFragment fragment = new RoommateFragment();
@@ -52,7 +50,7 @@ public class RoommateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_roommate, container, false);
     }
 
@@ -64,7 +62,6 @@ public class RoommateFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         roommatesList = view.findViewById(R.id.roommatesList);
 
-        // Read roommates from Firebase
         mDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

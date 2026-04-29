@@ -27,9 +27,7 @@ public class AddShoppingItemFragment extends DialogFragment {
     private EditText price;
     private EditText quantity;
 
-    public AddShoppingItemFragment() {
-        // Required empty public constructor
-    }
+    public AddShoppingItemFragment() {}
 
     @Override
     public void onStart() {
@@ -98,7 +96,7 @@ public class AddShoppingItemFragment extends DialogFragment {
         DatabaseReference shoppingRef =
                 FirebaseDatabase.getInstance().getReference("shopping_list");
 
-        // 🔥 Fetch user's display name from database
+
         userRef.get().addOnSuccessListener(snapshot -> {
 
             String addedBy = snapshot.child("name").getValue(String.class);

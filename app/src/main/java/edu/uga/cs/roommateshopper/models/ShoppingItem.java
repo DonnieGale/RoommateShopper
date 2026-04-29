@@ -3,7 +3,7 @@ package edu.uga.cs.roommateshopper.models;
 import java.io.Serializable;
 
 public class ShoppingItem implements Serializable {
-    public String id; // itemId
+    public String id;
     public String name;
     public String addedBy;
     public long timestamp;

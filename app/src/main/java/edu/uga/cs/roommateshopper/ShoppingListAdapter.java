@@ -40,7 +40,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 if (position != RecyclerView.NO_POSITION) {
                     ShoppingItem item = items.get(position);
 
-                    // 🔑 FIX: use newInstance instead of constructor
                     DialogFragment editShoppingItemFragment =
                             EditShoppingItemFragment.newInstance(item);
 
@@ -73,12 +72,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemAdedBy)
                 .setText("Added By: " + item.addedBy);
-
-        /*
-        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
-                .setText("Time Added: " + String.valueOf(item.timestamp));
-
-         */
 
         holder.itemView.<android.widget.TextView>findViewById(R.id.Cost)
                 .setText("Cost: $" + String.format("%.2f", item.price));

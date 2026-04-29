@@ -27,17 +27,12 @@ import edu.uga.cs.roommateshopper.models.ShoppingItem;
  */
 public class Splash extends Fragment {
 
-
-    //private int selectedNavItem = R.id.home;
-
     BottomNavigationView bottomNavigationView;
     NavigationRailView navigationRail;
 
     private int selectedNavItem = R.id.action_shoppingList;
 
-    public Splash() {
-        // Required empty public constructor
-    }
+    public Splash() {}
 
 
     public static Splash newInstance() {
@@ -61,7 +56,7 @@ public class Splash extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_splash, container, false);
 
     }
@@ -114,35 +109,16 @@ public class Splash extends Fragment {
                 return true;
             });
 
-            // 🔑 Restore the selected tab (this triggers the correct fragment load)
             bottomNavigationView.setSelectedItemId(selectedNavItem);
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        // 🔑 Save selected tab before rotation
         outState.putInt("selected_nav", selectedNavItem);
     }
-
-
-
-
-
-
 
 
 }

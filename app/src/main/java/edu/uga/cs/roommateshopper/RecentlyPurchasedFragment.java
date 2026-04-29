@@ -39,9 +39,7 @@ public class RecentlyPurchasedFragment extends Fragment {
     private RecentlyPurchasedFragmentAdapter adapter;
     private List<Purchase> purchases;
 
-    public RecentlyPurchasedFragment() {
-        // Required empty public constructor
-    }
+    public RecentlyPurchasedFragment() {}
 
 
     public static RecentlyPurchasedFragment newInstance() {
@@ -57,7 +55,7 @@ public class RecentlyPurchasedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_recently_purchased, container, false);
     }
     @Override
@@ -91,10 +89,8 @@ public class RecentlyPurchasedFragment extends Fragment {
 
                     double totalCost = 0;
 
-                    // uid -> total spent
                     Map<String, Double> userSpentMap = new HashMap<>();
 
-                    // 1. Sum all purchases + per-user totals
                     for (DataSnapshot purchaseSnap : purchaseSnapshot.getChildren()) {
 
                         Purchase purchase = purchaseSnap.getValue(Purchase.class);
@@ -126,7 +122,6 @@ public class RecentlyPurchasedFragment extends Fragment {
 
                             Map<String, UserTotal> perUserTotals = new HashMap<>();
 
-                            // 2. Build per-user settlement data
                             for (DataSnapshot userSnap : userSnapshot.getChildren()) {
 
                                 String uid = userSnap.getKey();
@@ -144,7 +139,6 @@ public class RecentlyPurchasedFragment extends Fragment {
                                 ));
                             }
 
-                            // 3. Create settlement object
                             Settlement settlement = new Settlement(
                                     null,
                                     System.currentTimeMillis(),
@@ -154,13 +148,11 @@ public class RecentlyPurchasedFragment extends Fragment {
                                     perUserTotals
                             );
 
-                            // 4. Save settlement to Firebase
                             FirebaseDBHelper.getInstance()
                                     .addSettlement(settlement);
 
                             Log.d(TAG, "Settlement saved successfully");
 
-                            // 5. Clear purchases AFTER saving
                             FirebaseDBHelper.getInstance()
                                     .clearPurchases();
 

@@ -68,8 +68,7 @@ public class ShoppingBasketFragment extends Fragment {
         ShoppingBasketAdapter adapter = new ShoppingBasketAdapter(items);
         recycler.setAdapter(adapter);
 
-        //addTestItem(); // adds a test item
-        listenForBasketItems(); // retrieves items and deletes a test item
+        listenForBasketItems();
 
         FloatingActionButton checkoutButton = view.findViewById(R.id.checkoutButton);
 

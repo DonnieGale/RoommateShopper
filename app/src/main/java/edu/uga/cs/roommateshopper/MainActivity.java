@@ -47,9 +47,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // 🔑 CRITICAL FIX: Only add fragments if first launch
         if (savedInstanceState == null) {
-            // Not logged in — show login screen
+
             if (currentUser == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             } else {
 
-                // Logged in — show splash
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragmentContainerView, new Splash())

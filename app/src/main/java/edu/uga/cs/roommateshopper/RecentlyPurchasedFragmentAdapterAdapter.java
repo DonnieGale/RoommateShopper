@@ -41,7 +41,6 @@ public class RecentlyPurchasedFragmentAdapterAdapter
                 if (position != RecyclerView.NO_POSITION) {
                     ShoppingItem item = items.get(position);
 
-                    // ✅ FIX: use newInstance()
                     DialogFragment fragment =
                             Remove_Purchase_Item.newInstance(item, purchaseId);
 

@@ -23,9 +23,7 @@ public class EditPrice extends DialogFragment {
     EditText editText;
     Button button;
 
-    public EditPrice() {
-        // Required empty public constructor
-    }
+    public EditPrice() {}
 
 
     public static EditPrice newInstance(Purchase purchase) {
@@ -48,7 +46,6 @@ public class EditPrice extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_price, container, false);
     }
 

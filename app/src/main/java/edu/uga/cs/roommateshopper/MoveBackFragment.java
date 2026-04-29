@@ -23,16 +23,14 @@ public class MoveBackFragment extends DialogFragment {
     Button button;
     ShoppingItem item;
 
-    // ✅ REQUIRED empty constructor
-    public MoveBackFragment() {
-    }
 
-    // ✅ Proper way to pass data
+    public MoveBackFragment() {}
+
     public static MoveBackFragment newInstance(ShoppingItem item) {
         MoveBackFragment fragment = new MoveBackFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("item", item); // 🔑 critical
+        args.putSerializable("item", item);
 
         fragment.setArguments(args);
         return fragment;
@@ -42,7 +40,6 @@ public class MoveBackFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 🔑 Restore item after rotation
         if (getArguments() != null) {
             item = (ShoppingItem) getArguments().getSerializable("item");
         }
@@ -61,7 +58,6 @@ public class MoveBackFragment extends DialogFragment {
 
         button = view.findViewById(R.id.button3);
 
-        // 🛡️ Prevent crash if something goes wrong
         if (item == null) {
             Log.e("MoveBackFragment", "Item is null after recreation");
             dismiss();

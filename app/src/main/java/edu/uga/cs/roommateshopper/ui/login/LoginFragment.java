@@ -50,7 +50,6 @@ public class LoginFragment extends Fragment {
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
 
-        // Observe form validation state
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) return;
             loginButton.setEnabled(loginFormState.isDataValid());
@@ -62,7 +61,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        // Observe login result posted by ViewModel
         loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), loginResult -> {
             if (loginResult == null) return;
             loadingProgressBar.setVisibility(View.GONE);
@@ -74,7 +72,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        // Validate fields as user types
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -93,7 +90,6 @@ public class LoginFragment extends Fragment {
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
 
-        // Allow login via keyboard done action
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
@@ -105,7 +101,6 @@ public class LoginFragment extends Fragment {
             return false;
         });
 
-        // Login button click
         loginButton.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(

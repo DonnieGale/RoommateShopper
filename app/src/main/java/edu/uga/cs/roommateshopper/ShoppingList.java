@@ -32,9 +32,7 @@ public class ShoppingList extends Fragment {
     RecyclerView recycler;
     private static final String TAG = "FIREBASE_TEST";
 
-    public ShoppingList() {
-        // Required empty public constructor
-    }
+    public ShoppingList() {}
 
 
     public static ShoppingList newInstance() {
@@ -50,7 +48,7 @@ public class ShoppingList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 
@@ -65,9 +63,7 @@ public class ShoppingList extends Fragment {
         ShoppingListAdapter adapter = new ShoppingListAdapter(items);
         recycler.setAdapter(adapter);
 
-        // ADD / READ / DELETE shopping item test
-        //addTestItem(); // adds a test item
-        listenForShoppingItems(); // retrieves items and deletes a test item
+        listenForShoppingItems();
 
         FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
 
@@ -84,19 +80,6 @@ public class ShoppingList extends Fragment {
 
 
 
-    }
-
-    // FOR TESTING DATABASE OPERATIONS:
-    private void addTestItem() {
-        ShoppingItem item = new ShoppingItem();
-        item.name = "DeleteMe";
-        item.addedBy = "testUser123";
-        item.timestamp = System.currentTimeMillis();
-
-        FirebaseDBHelper.getInstance().addShoppingItem(item);
-        items.add(item);
-
-        Log.d(TAG, "Item added to Firebase");
     }
 
 

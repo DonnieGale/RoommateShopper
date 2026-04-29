@@ -32,9 +32,7 @@ public class ProfileFragment extends Fragment {
 
     String user;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    public ProfileFragment() {}
 
 
     public static ProfileFragment newInstance(String param1, String param2) {
@@ -50,7 +48,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
     @Override
@@ -97,8 +95,6 @@ public class ProfileFragment extends Fragment {
             button.setOnClickListener(v -> {
                 FirebaseAuth.getInstance().signOut();
 
-                //getParentFragmentManager().popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
                 getParentFragmentManager().beginTransaction();
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragmentContainerView, new LoginFragment()).commit();
@@ -106,7 +102,6 @@ public class ProfileFragment extends Fragment {
             });
 
 
-            // Focus Listener
             Name.setOnFocusChangeListener((v, hasFocus) -> {
                 if (!hasFocus) {
                     saveName(Name.getText().toString(), Uid, welcome);
@@ -114,7 +109,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            // Enter Key Listener
+
             Name.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
                         (event != null && event.getKeyCode() == android.view.KeyEvent.KEYCODE_ENTER)) {
@@ -127,7 +122,7 @@ public class ProfileFragment extends Fragment {
 
     }
     private void saveName(String fullName, String Uid, TextView welcomeLabel) {
-        // Safety check: if user deleted the "Name: " prefix
+
         String newName = fullName;
         if (fullName.startsWith("Name: ")) {
             newName = fullName.substring(6).trim();
@@ -137,7 +132,6 @@ public class ProfileFragment extends Fragment {
 
         final String finalnewName = newName;
 
-        // Update Realtime Database
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("users").child(Uid).child("name").setValue(newName)
                 .addOnSuccessListener(aVoid -> {
@@ -145,7 +139,6 @@ public class ProfileFragment extends Fragment {
                     android.util.Log.d("ProfileFragment", "Update successful");
                 });
 
-        // Also update Firebase Auth Profile so it stays in sync
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             com.google.firebase.auth.UserProfileChangeRequest profileUpdates =

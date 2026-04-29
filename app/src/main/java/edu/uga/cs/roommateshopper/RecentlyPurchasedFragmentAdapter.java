@@ -33,7 +33,7 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
         TextView textView;
         RecyclerView recycler;
         TextView textView2;
-        TextView dateTextView; // 👈 NEW
+        TextView dateTextView;
 
         public RecentlyPurchasedHolder(View itemView) {
             super(itemView);
@@ -41,7 +41,7 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
             textView = itemView.findViewById(R.id.textView5);
             recycler = itemView.findViewById(R.id.recycler);
             textView2 = itemView.findViewById(R.id.TotalPrice);
-            dateTextView = itemView.findViewById(R.id.PurchaseDate); // 👈 make sure this exists in XML
+            dateTextView = itemView.findViewById(R.id.PurchaseDate);
 
             if (recycler != null) {
                 recycler.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -76,7 +76,6 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
         holder.textView.setText("Purchased by: " + purchase.purchasedByName);
         holder.textView2.setText("Total Price: $" + String.format("%.2f", purchase.totalPrice));
 
-        // ✅ FORMAT DATE/TIME
         if (purchase.timestamp != 0) {
             Date date = new Date(purchase.timestamp);
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault());
@@ -102,5 +101,6 @@ public class RecentlyPurchasedFragmentAdapter extends RecyclerView.Adapter<Recen
     public int getItemCount() {
         return purchases != null ? purchases.size() : 0;
     }
+
 }
 

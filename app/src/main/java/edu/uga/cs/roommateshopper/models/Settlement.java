@@ -3,7 +3,7 @@ package edu.uga.cs.roommateshopper.models;
 import java.util.Map;
 
 public class Settlement {
-    public String id; // settlementId
+    public String id;
     public long timestamp;
     public double totalCost;
     public double averagePerPerson;

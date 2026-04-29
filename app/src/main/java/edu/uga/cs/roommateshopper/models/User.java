@@ -1,7 +1,7 @@
 package edu.uga.cs.roommateshopper.models;
 
 public class User {
-    public String id; // Firebase key (uid)
+    public String id;
     public String name;
     public String email;
 

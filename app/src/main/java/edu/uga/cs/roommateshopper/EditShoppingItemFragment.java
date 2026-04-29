@@ -36,15 +36,14 @@ public class EditShoppingItemFragment extends DialogFragment {
     ShoppingItem item;
 
     public EditShoppingItemFragment() {
-        // Required empty public constructor
+
     }
 
-    // ✅ Proper way to pass data
     public static EditShoppingItemFragment newInstance(ShoppingItem item) {
         EditShoppingItemFragment fragment = new EditShoppingItemFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("item", item); // 🔑 IMPORTANT
+        args.putSerializable("item", item);
 
         fragment.setArguments(args);
         return fragment;
@@ -54,7 +53,6 @@ public class EditShoppingItemFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 🔑 Restore item after rotation
         if (getArguments() != null) {
             item = (ShoppingItem) getArguments().getSerializable("item");
         }
@@ -82,11 +80,9 @@ public class EditShoppingItemFragment extends DialogFragment {
         price.setText(String.valueOf(item.price));
         quantity.setText(String.valueOf(item.quantity));
 
-
-        // 🛡️ Safety check
         if (item == null) {
             Log.e(TAG, "Item is null in EditShoppingItemFragment");
-            dismiss(); // prevent crash
+            dismiss();
             return;
         }
 

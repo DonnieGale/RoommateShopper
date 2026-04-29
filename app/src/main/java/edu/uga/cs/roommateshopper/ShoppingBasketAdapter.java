@@ -39,7 +39,6 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
                 if (position != RecyclerView.NO_POSITION) {
                     ShoppingItem item = items.get(position);
 
-                    // 🔑 FIX: use newInstance()
                     DialogFragment moveBackFragment =
                             MoveBackFragment.newInstance(item);
 
@@ -73,10 +72,6 @@ public class ShoppingBasketAdapter extends RecyclerView.Adapter<ShoppingBasketAd
         holder.itemView.<android.widget.TextView>findViewById(R.id.ItemAdedBy)
                 .setText("Added By: " + item.addedBy);
 
-        /*
-        holder.itemView.<android.widget.TextView>findViewById(R.id.ItemTime)
-                .setText("Time Added: " + String.valueOf(item.timestamp));
-        */
         holder.itemView.<android.widget.TextView>findViewById(R.id.Cost)
                 .setText("Cost: $" + String.format("%.2f", item.price));
 
