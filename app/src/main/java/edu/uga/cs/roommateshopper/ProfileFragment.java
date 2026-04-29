@@ -21,33 +21,58 @@ import edu.uga.cs.roommateshopper.models.User;
 import edu.uga.cs.roommateshopper.ui.login.LoginFragment;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment that displays and manages the user's profile information.
+ * This includes displaying the user's name, email, and UID, and allowing the user to update their name.
  */
 public class ProfileFragment extends Fragment {
 
+    /**
+     * The ID of the current user.
+     */
     String user;
 
+    /**
+     * Default constructor for ProfileFragment.
+     */
     public ProfileFragment() {}
 
-
+    /**
+     * Factory method to create a new instance of ProfileFragment.
+     * @return A new instance of ProfileFragment.
+     */
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
 
+    /**
+     * Called to do initial creation of the fragment.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
+    /**
+     * Called immediately after onCreateView has returned, but before any saved state has been restored in to the view.
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
@@ -118,6 +143,13 @@ public class ProfileFragment extends Fragment {
         }
 
     }
+
+    /**
+     * Saves the updated username to Firebase database and authentication profile.
+     * @param fullName The full text from the name input field.
+     * @param Uid The user's unique identifier.
+     * @param welcomeLabel The TextView that displays the welcome message.
+     */
     private void saveName(String fullName, String Uid, TextView welcomeLabel) {
 
         String newName = fullName;

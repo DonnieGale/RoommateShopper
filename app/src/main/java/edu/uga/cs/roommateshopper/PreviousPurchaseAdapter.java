@@ -18,20 +18,39 @@ import edu.uga.cs.roommateshopper.models.Settlement;
 import edu.uga.cs.roommateshopper.models.UserTotal;
 
 
+/**
+ * Adapter class for the Previous Purchases RecyclerView.
+ * It binds a list of Settlement objects to the view items in the previous purchases list.
+ * Each settlement item also contains a nested RecyclerView to show individual user totals.
+ */
 public class PreviousPurchaseAdapter extends RecyclerView.Adapter<PreviousPurchaseAdapter.PreviousPurchasedHolder> {
 
     private List<Settlement> settlements;
 
+    /**
+     * Constructs a new PreviousPurchaseAdapter with the specified list of settlements.
+     *
+     * @param settlements The list of settlements to display.
+     */
     public PreviousPurchaseAdapter(List<Settlement> settlements) {
         this.settlements = settlements;
     }
 
+    /**
+     * ViewHolder class for previous settlement items.
+     * It holds the view for each individual settlement and manages a nested RecyclerView for user details.
+     */
     class PreviousPurchasedHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         RecyclerView recycler;
         TextView total;
         TextView average;
 
+        /**
+         * Constructs a new PreviousPurchasedHolder.
+         *
+         * @param itemView The view of the individual settlement item.
+         */
         public PreviousPurchasedHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
@@ -45,6 +64,13 @@ public class PreviousPurchaseAdapter extends RecyclerView.Adapter<PreviousPurcha
         }
     }
 
+    /**
+     * Called when RecyclerView needs a new ViewHolder of the given type to represent an item.
+     *
+     * @param parent The ViewGroup into which the new View will be added.
+     * @param viewType The view type of the new View.
+     * @return A new PreviousPurchasedHolder that holds a View of the given view type.
+     */
     @NonNull
     @Override
     public PreviousPurchasedHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,6 +78,13 @@ public class PreviousPurchaseAdapter extends RecyclerView.Adapter<PreviousPurcha
         return new PreviousPurchasedHolder(view);
     }
 
+    /**
+     * Called by RecyclerView to display the settlement data at the specified position.
+     * It also sets up the adapter for the nested RecyclerView.
+     *
+     * @param holder The ViewHolder which should be updated to represent the contents of the item at the given position.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(PreviousPurchasedHolder holder, int position) {
         Settlement settlement = settlements.get(position);
@@ -74,6 +107,11 @@ public class PreviousPurchaseAdapter extends RecyclerView.Adapter<PreviousPurcha
         }
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     *
+     * @return The total number of items in this adapter.
+     */
     @Override
     public int getItemCount() {
         return settlements != null ? settlements.size() : 0;

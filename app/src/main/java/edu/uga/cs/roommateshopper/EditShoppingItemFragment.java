@@ -20,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
+/**
+ * DialogFragment that allows users to edit an existing shopping item.
+ * Users can update the item's name, price, and quantity, delete the item,
+ * or move it to their shopping basket.
+ */
 public class EditShoppingItemFragment extends DialogFragment {
 
     EditText price;
@@ -33,10 +38,19 @@ public class EditShoppingItemFragment extends DialogFragment {
 
     ShoppingItem item;
 
+    /**
+     * Default constructor for the EditShoppingItemFragment.
+     */
     public EditShoppingItemFragment() {
 
     }
 
+    /**
+     * Static factory method to create a new instance of the EditShoppingItemFragment with a specific item.
+     *
+     * @param item The shopping item to be edited.
+     * @return A new instance of fragment EditShoppingItemFragment.
+     */
     public static EditShoppingItemFragment newInstance(ShoppingItem item) {
         EditShoppingItemFragment fragment = new EditShoppingItemFragment();
 
@@ -47,6 +61,12 @@ public class EditShoppingItemFragment extends DialogFragment {
         return fragment;
     }
 
+    /**
+     * Called when the fragment is first created.
+     * Retrieves the shopping item from the fragment arguments.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +76,14 @@ public class EditShoppingItemFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +91,13 @@ public class EditShoppingItemFragment extends DialogFragment {
         return inflater.inflate(R.layout.fragment_edit_shopping_item, container, false);
     }
 
+    /**
+     * Called immediately after onCreateView has returned.
+     * Initializes the UI components with the item's current data and sets up listeners for save, delete, and add to cart actions.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -29,9 +29,12 @@ import edu.uga.cs.roommateshopper.models.Settlement;
 import edu.uga.cs.roommateshopper.models.User;
 import edu.uga.cs.roommateshopper.models.UserTotal;
 
-
+/**
+ * Fragment that displays the list of recently purchased items.
+ * It provides functionality to view these purchases and perform a settlement,
+ * which calculates how much each roommate owes or is owed.
+ */
 public class RecentlyPurchasedFragment extends Fragment {
-
 
     public static final String TAG = "RecentlyPurchasedFragment";
     private FloatingActionButton settleButton;
@@ -39,25 +42,53 @@ public class RecentlyPurchasedFragment extends Fragment {
     private RecentlyPurchasedFragmentAdapter adapter;
     private List<Purchase> purchases;
 
+    /**
+     * Default constructor for the RecentlyPurchasedFragment.
+     */
     public RecentlyPurchasedFragment() {}
 
-
+    /**
+     * Static factory method to create a new instance of the RecentlyPurchasedFragment.
+     *
+     * @return A new instance of fragment RecentlyPurchasedFragment.
+     */
     public static RecentlyPurchasedFragment newInstance() {
         RecentlyPurchasedFragment fragment = new RecentlyPurchasedFragment();
         return fragment;
     }
 
+    /**
+     * Called when the fragment is first created.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_recently_purchased, container, false);
     }
+
+    /**
+     * Called immediately after onCreateView has returned.
+     * Initializes the RecyclerView, the adapter, and the settle button.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
@@ -175,6 +206,10 @@ public class RecentlyPurchasedFragment extends Fragment {
 
     }
 
+    /**
+     * Sets up a listener for the purchases collection in the Firebase database.
+     * Updates the local list of purchases and notifies the adapter when data changes.
+     */
     private void listenForPurchaseItems() {
         FirebaseDBHelper.getInstance()
                 .getPurchasesRef()

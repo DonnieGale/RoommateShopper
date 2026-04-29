@@ -23,11 +23,22 @@ import edu.uga.cs.roommateshopper.Splash;
 import edu.uga.cs.roommateshopper.databinding.FragmentLoginBinding;
 import edu.uga.cs.roommateshopper.R;
 
+/**
+ * Fragment that handles the user login process.
+ * It provides the user interface for entering credentials and communicates with the LoginViewModel.
+ */
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return Return the View for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,6 +48,11 @@ public class LoginFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Called immediately after onCreateView has returned. Sets up observers and event listeners.
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -107,6 +123,11 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    /**
+     * Updates the UI when a user has successfully logged in.
+     * Displays a welcome message and navigates to the splash screen.
+     * @param model The view model representing the logged-in user.
+     */
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         if (getContext() != null && getContext().getApplicationContext() != null) {
@@ -117,12 +138,20 @@ public class LoginFragment extends Fragment {
         manager.beginTransaction().replace(R.id.fragmentContainerView, splash).commit();
     }
 
+    /**
+     * Displays a toast message when the login attempt fails.
+     * @param errorString The resource ID of the error message to display.
+     */
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
         }
     }
 
+    /**
+     * Called when the view hierarchy associated with the fragment is being removed.
+     * Clears the binding reference.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

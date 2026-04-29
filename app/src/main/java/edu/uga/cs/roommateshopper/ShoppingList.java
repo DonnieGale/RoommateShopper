@@ -24,7 +24,11 @@ import java.util.List;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
-
+/**
+ * Fragment that displays the shopping list of items requested by roommates.
+ * It connects to the Firebase database to provide real-time updates and allows
+ * users to add new items to the list via a FloatingActionButton.
+ */
 public class ShoppingList extends Fragment {
 
     List<ShoppingItem> items;
@@ -32,19 +36,39 @@ public class ShoppingList extends Fragment {
     RecyclerView recycler;
     private static final String TAG = "FIREBASE_TEST";
 
+    /**
+     * Default constructor for the ShoppingList fragment.
+     */
     public ShoppingList() {}
 
-
+    /**
+     * Static factory method to create a new instance of the ShoppingList fragment.
+     *
+     * @return A new instance of fragment ShoppingList.
+     */
     public static ShoppingList newInstance() {
         ShoppingList fragment = new ShoppingList();
         return fragment;
     }
 
+    /**
+     * Called when the fragment is first created.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +76,13 @@ public class ShoppingList extends Fragment {
         return inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 
+    /**
+     * Called immediately after onCreateView has returned, but before any saved state has been restored in to the view.
+     * Initializes the RecyclerView and the FloatingActionButton.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -75,15 +106,12 @@ public class ShoppingList extends Fragment {
             }
         });
 
-
-
-
-
-
     }
 
-
-
+    /**
+     * Sets up a listener for the Firebase database to track changes in the shopping list.
+     * When data changes, it updates the local items list and notifies the adapter.
+     */
     private void listenForShoppingItems() {
         FirebaseDBHelper.getInstance()
                 .getShoppingListRef()
@@ -123,6 +151,5 @@ public class ShoppingList extends Fragment {
                     }
                 });
     }
-
 
 }

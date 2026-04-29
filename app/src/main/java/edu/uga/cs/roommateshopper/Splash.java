@@ -16,9 +16,10 @@ import com.google.android.material.navigationrail.NavigationRailView;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link Splash#newInstance} factory method to
- * create an instance of this fragment.
+ * Main application container fragment that manages navigation between different features.
+ * It uses a BottomNavigationView for portrait orientation and a NavigationRailView
+ * for landscape orientation to host various fragments like ShoppingList, ShoppingBasket,
+ * RecentlyPurchased, and more.
  */
 public class Splash extends Fragment {
 
@@ -27,9 +28,16 @@ public class Splash extends Fragment {
 
     private int selectedNavItem = R.id.action_shoppingList;
 
+    /**
+     * Default constructor for the Splash fragment.
+     */
     public Splash() {}
 
-
+    /**
+     * Static factory method to create a new instance of the Splash fragment.
+     *
+     * @return A new instance of fragment Splash.
+     */
     public static Splash newInstance() {
         Splash fragment = new Splash();
         Bundle args = new Bundle();
@@ -39,6 +47,12 @@ public class Splash extends Fragment {
         return fragment;
     }
 
+    /**
+     * Called when the fragment is first created.
+     * Restores the selected navigation item if available from savedInstanceState.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +62,14 @@ public class Splash extends Fragment {
         }
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +78,13 @@ public class Splash extends Fragment {
 
     }
 
+    /**
+     * Called immediately after onCreateView has returned.
+     * Sets up the navigation view (BottomNavigationView or NavigationRailView) based on the current orientation.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
@@ -109,11 +138,16 @@ public class Splash extends Fragment {
 
     }
 
+    /**
+     * Called to retrieve per-instance state from a fragment before being killed so that
+     * the state can be restored in onCreate.
+     *
+     * @param outState Bundle in which to place your saved state.
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("selected_nav", selectedNavItem);
     }
-
 
 }

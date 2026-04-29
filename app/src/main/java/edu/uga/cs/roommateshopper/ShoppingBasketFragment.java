@@ -28,7 +28,11 @@ import java.util.Map;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
-
+/**
+ * Fragment that displays the user's shopping basket.
+ * It manages the items that the user intends to purchase and provides
+ * functionality to check out the basket.
+ */
 public class ShoppingBasketFragment extends Fragment {
 
     List<ShoppingItem> items;
@@ -36,27 +40,54 @@ public class ShoppingBasketFragment extends Fragment {
     RecyclerView recycler;
     private static final String TAG = "ShoppingBasketFragment";
 
-
+    /**
+     * Default constructor for the ShoppingBasketFragment.
+     */
     public ShoppingBasketFragment() {
     }
 
+    /**
+     * Static factory method to create a new instance of the ShoppingBasketFragment.
+     *
+     * @return A new instance of fragment ShoppingBasketFragment.
+     */
     public static ShoppingBasketFragment newInstance() {
         ShoppingBasketFragment fragment = new ShoppingBasketFragment();
         return fragment;
     }
 
+    /**
+     * Called when the fragment is first created.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_shopping_basket, container, false);
     }
 
+    /**
+     * Called immediately after onCreateView has returned.
+     * Initializes the RecyclerView, the adapter, and the checkout button.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -128,6 +159,10 @@ public class ShoppingBasketFragment extends Fragment {
 
     }
 
+    /**
+     * Sets up a listener for the user's shopping basket in the Firebase database.
+     * Updates the local list of items and notifies the adapter when data changes.
+     */
     private void listenForBasketItems() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDBHelper.getInstance()

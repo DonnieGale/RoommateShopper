@@ -19,14 +19,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import edu.uga.cs.roommateshopper.models.ShoppingItem;
 
+/**
+ * DialogFragment that provides an interface for roommates to add a new shopping item.
+ * It collects the item name, price, and quantity, then saves the information to the Firebase database.
+ */
 public class AddShoppingItemFragment extends DialogFragment {
 
     private EditText itemName;
     private EditText price;
     private EditText quantity;
 
+    /**
+     * Default constructor for the AddShoppingItemFragment.
+     */
     public AddShoppingItemFragment() {}
 
+    /**
+     * Sets the dialog window layout parameters when the fragment starts.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -38,12 +48,27 @@ public class AddShoppingItemFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_add_shopping_item, container, false);
     }
 
+    /**
+     * Called immediately after onCreateView has returned.
+     * Initializes the UI components and sets up the click listener for the save button.
+     *
+     * @param view The View returned by onCreateView.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -56,6 +81,10 @@ public class AddShoppingItemFragment extends DialogFragment {
         saveButton.setOnClickListener(v -> addItem());
     }
 
+    /**
+     * Validates the input and adds the new shopping item to the Firebase database.
+     * It also fetches the name of the user who added the item.
+     */
     private void addItem() {
         String nameString = itemName.getText().toString();
         String priceString = price.getText().toString();

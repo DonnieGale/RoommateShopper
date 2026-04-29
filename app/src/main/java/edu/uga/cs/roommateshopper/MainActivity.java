@@ -14,11 +14,23 @@ import com.google.firebase.auth.FirebaseUser;
 
 import edu.uga.cs.roommateshopper.ui.login.LoginFragment;
 
+/**
+ * The main activity of the application that handles the initial screen navigation.
+ * It determines whether to show the login screen or the splash screen based on the user's authentication state.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Tag used for logging purposes.
+     */
     public static final String TAG = "RoommateShopper";
+    
     private FirebaseAuth mAuth;
 
+    /**
+     * Called when the activity is starting. Initializes the UI and checks the authentication state.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
